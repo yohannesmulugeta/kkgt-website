@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ImageLinkCard, InquiryBand, Reveal, SectionHeading, Seo } from '../components/UI';
@@ -22,34 +22,22 @@ const scrollBusinesses = businessAreas.map((area, index) => ({
 }));
 
 function CinematicBusinessScroll() {
+  const trackRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
-  const stepRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ['start start', 'end end'],
+  });
 
-  useEffect(() => {
+  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
     if (reduceMotion) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const index = Number((entry.target as HTMLElement).dataset.index ?? 0);
-          setActiveIndex(index);
-        });
-      },
-      {
-        root: null,
-        threshold: 0,
-        rootMargin: '-47% 0px -47% 0px',
-      },
+    const nextIndex = Math.min(
+      scrollBusinesses.length - 1,
+      Math.floor(Math.max(0, Math.min(0.999999, latest)) * scrollBusinesses.length),
     );
-
-    stepRefs.current.forEach((step) => {
-      if (step) observer.observe(step);
-    });
-
-    return () => observer.disconnect();
-  }, [reduceMotion]);
+    setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
+  });
 
   if (reduceMotion) {
     return (
@@ -80,14 +68,11 @@ function CinematicBusinessScroll() {
             <span>ONE CINEMATIC MOMENT</span>
             <strong>Four businesses. One connected view.</strong>
           </div>
-          <p>Keep scrolling. The frame stays in place while KKGT’s portfolio changes from coffee to commodities, crop protection and trading.</p>
+          <p>Scroll through one scene as KKGT moves from coffee to commodities, crop protection and trading.</p>
         </div>
       </div>
 
-      <div
-        className="home-scroll__scrolly"
-        style={{ height: `${(scrollBusinesses.length + 1) * 100}svh` }}
-      >
+      <div ref={trackRef} className="home-scroll__track">
         <div className="home-scroll__sticky">
           <div className="home-scroll__media" aria-hidden="true">
             {scrollBusinesses.map((area, index) => (
@@ -97,9 +82,9 @@ function CinematicBusinessScroll() {
                 style={{ backgroundImage: `url(${area.image})` }}
                 animate={{
                   opacity: activeIndex === index ? 1 : 0,
-                  scale: activeIndex === index ? 1.01 : 1.07,
+                  scale: activeIndex === index ? 1.01 : 1.06,
                 }}
-                transition={{ duration: .72, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: .68, ease: [0.22, 1, 0.36, 1] }}
               />
             ))}
             <div className="home-scroll__veil" />
@@ -114,16 +99,20 @@ function CinematicBusinessScroll() {
                   className={`home-scroll__copy${activeIndex === index ? ' is-active' : ''}`}
                   animate={{
                     opacity: activeIndex === index ? 1 : 0,
-                    y: activeIndex === index ? 0 : 24,
+                    y: activeIndex === index ? 0 : 22,
                   }}
-                  transition={{ duration: .48, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: .42, ease: [0.22, 1, 0.36, 1] }}
                   aria-hidden={activeIndex !== index}
                 >
                   <span className="home-scroll__kicker">KKGT BUSINESS JOURNEY</span>
                   <span className="home-scroll__number">0{index + 1} / 04 · {area.scrollEyebrow}</span>
                   <h2>{area.scrollTitle}</h2>
                   <p>{area.scrollCopy}</p>
-                  <Link to={area.to} className="button button--orange home-scroll__action" tabIndex={activeIndex === index ? 0 : -1}>
+                  <Link
+                    to={area.to}
+                    className="button button--orange home-scroll__action"
+                    tabIndex={activeIndex === index ? 0 : -1}
+                  >
                     Explore {index === 0 ? 'coffee export' : area.title.toLowerCase()} <ArrowUpRight size={17} aria-hidden="true" />
                   </Link>
                 </motion.div>
@@ -144,21 +133,11 @@ function CinematicBusinessScroll() {
             <ArrowDownRight size={15} /> Scroll to transform the portfolio
           </div>
 
-          <div className="home-scroll__progress" aria-hidden="true">
-            <span style={{ width: `${((activeIndex + 1) / scrollBusinesses.length) * 100}%` }} />
-          </div>
-        </div>
-
-        <div className="home-scroll__steps" aria-hidden="true">
-          {scrollBusinesses.map((area, index) => (
-            <div
-              key={area.to}
-              ref={(node) => { stepRefs.current[index] = node; }}
-              className="home-scroll__step"
-              data-index={index}
-              style={{ top: `${index * 100}svh` }}
-            />
-          ))}
+          <motion.div
+            className="home-scroll__progress"
+            style={{ scaleX: scrollYProgress }}
+            aria-hidden="true"
+          />
         </div>
       </div>
     </section>
