@@ -23,86 +23,70 @@ const scrollBusinesses = businessAreas.map((area, index) => ({
 function CinematicBusinessScroll() {
   const reduceMotion = useReducedMotion();
 
-  if (reduceMotion) {
-    return (
-      <section className="home-scroll home-scroll--static" aria-label="KKGT business portfolio">
-        <div className="container">
-          <SectionHeading
-            eyebrow="ONE COMPANY · FOUR BUSINESS LINES"
-            title="From Ethiopia"
-            accent="to opportunity."
-            copy="Coffee, commodities, crop protection and trading are different customer journeys connected by one KKGT operating platform."
-            dark
-          />
-          <div className="home-scroll__static-grid">
-            {scrollBusinesses.map((area, index) => (
-              <ImageLinkCard key={area.to} {...area} title={area.scrollTitle} index={`0${index + 1}`} />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="home-scroll" aria-label="Scroll through KKGT business lines">
-      {scrollBusinesses.map((area, index) => (
-        <div className="home-scroll__step" key={area.to}>
-          <article
-            className={`home-scroll__chapter home-scroll__chapter--${index + 1}`}
-            style={{ zIndex: index + 1 }}
-          >
-            <div className="home-scroll__media" aria-hidden="true">
-              <motion.div
-                className="home-scroll__scene"
-                style={{ backgroundImage: `url(${area.image})` }}
-                initial={{ scale: 1.055 }}
-                whileInView={{ scale: 1.015 }}
-                viewport={{ once: false, amount: .45 }}
-                transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-              />
-              <div className="home-scroll__veil" />
-              <div className="home-scroll__grain" />
-            </div>
-
-            <div className="container home-scroll__layout">
-              <motion.div
-                className="home-scroll__copy"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: .55 }}
-                transition={{ duration: .58, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <span className="home-scroll__kicker">ONE COMPANY · FOUR BUSINESS LINES</span>
-                <span className="home-scroll__number">0{index + 1} / 04 · {area.scrollEyebrow}</span>
-                <h2>{area.scrollTitle}</h2>
-                <p>{area.scrollCopy}</p>
-                <Link to={area.to} className="button button--orange home-scroll__action">
-                  Explore {index === 0 ? 'coffee export' : area.title.toLowerCase()} <ArrowUpRight size={17} aria-hidden="true" />
-                </Link>
-              </motion.div>
-
-              <div className="home-scroll__rail" aria-hidden="true">
-                {scrollBusinesses.map((railArea, railIndex) => (
-                  <div key={railArea.to} className={railIndex === index ? 'is-active' : ''}>
-                    <span>0{railIndex + 1}</span>
-                    <strong>{railArea.scrollTitle}</strong>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {index === 0 ? (
-              <div className="home-scroll__hint" aria-hidden="true">
-                <ArrowDownRight size={15} /> Scroll to move through the portfolio
-              </div>
-            ) : null}
-
-            <div className="home-scroll__progress" aria-hidden="true">
-              <span style={{ width: `${((index + 1) / scrollBusinesses.length) * 100}%` }} />
-            </div>
-          </article>
+      <div className="home-scroll__section-intro">
+        <div className="container home-scroll__section-intro-inner">
+          <div>
+            <span>ONE CINEMATIC JOURNEY</span>
+            <strong>Four business lines. One KKGT story.</strong>
+          </div>
+          <p>Scroll naturally through coffee, commodities, agrochemicals and trading. Each panel is part of the same homepage—not a separate page.</p>
         </div>
+      </div>
+
+      {scrollBusinesses.map((area, index) => (
+        <article className={`home-scroll__panel home-scroll__panel--${index + 1}`} key={area.to}>
+          <div className="home-scroll__media" aria-hidden="true">
+            <motion.div
+              className="home-scroll__scene"
+              style={{ backgroundImage: `url(${area.image})` }}
+              initial={reduceMotion ? false : { scale: 1.08, opacity: .72 }}
+              whileInView={{ scale: 1.01, opacity: 1 }}
+              viewport={{ once: false, amount: .35 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 1.05, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <div className="home-scroll__veil" />
+            <div className="home-scroll__grain" />
+          </div>
+
+          <div className="container home-scroll__layout">
+            <motion.div
+              className="home-scroll__copy"
+              initial={reduceMotion ? false : { opacity: 0, y: 34 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: .45 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: .62, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span className="home-scroll__kicker">KKGT BUSINESS JOURNEY</span>
+              <span className="home-scroll__number">0{index + 1} / 04 · {area.scrollEyebrow}</span>
+              <h2>{area.scrollTitle}</h2>
+              <p>{area.scrollCopy}</p>
+              <Link to={area.to} className="button button--orange home-scroll__action">
+                Explore {index === 0 ? 'coffee export' : area.title.toLowerCase()} <ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+            </motion.div>
+
+            <div className="home-scroll__rail" aria-hidden="true">
+              {scrollBusinesses.map((railArea, railIndex) => (
+                <div key={railArea.to} className={railIndex === index ? 'is-active' : ''}>
+                  <span>0{railIndex + 1}</span>
+                  <strong>{railArea.scrollTitle}</strong>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {index === 0 ? (
+            <div className="home-scroll__hint" aria-hidden="true">
+              <ArrowDownRight size={15} /> Continue scrolling
+            </div>
+          ) : null}
+
+          <div className="home-scroll__progress" aria-hidden="true">
+            <span style={{ width: `${((index + 1) / scrollBusinesses.length) * 100}%` }} />
+          </div>
+        </article>
       ))}
     </section>
   );
