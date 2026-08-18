@@ -23,44 +23,66 @@
 .home-hero--normal h1 em { color: var(--orange) !important; }
 .home-hero--normal .eyebrow--light { color: rgba(255,255,255,.8) !important; }
 
-/* ---------- One cinematic scroll section ---------- */
+/* ---------- One safe cinematic scroll section ---------- */
 .home-scroll {
   position: relative;
   background: var(--green-deep);
   color: #fff;
-  isolation: isolate;
+  overflow: clip;
 }
 
-/*
-  The step owns real document height. The chapter is only the pinned visual.
-  This avoids the previous bug where the sticky element itself was also the
-  only source of scroll height and adjacent chapters appeared at once.
-*/
-.home-scroll__step {
+.home-scroll__section-intro {
   position: relative;
-  height: 150vh;
-  height: 150svh;
+  z-index: 2;
+  padding: 72px 0 44px;
   background: var(--green-deep);
+  border-bottom: 1px solid rgba(255,255,255,.1);
 }
 
-.home-scroll__step:last-child {
-  height: 100vh;
-  height: 100svh;
+.home-scroll__section-intro-inner {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(280px,.7fr);
+  gap: 56px;
+  align-items: end;
 }
 
-.home-scroll__chapter {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-  min-height: 640px;
+.home-scroll__section-intro span {
+  display: block;
+  color: var(--orange);
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.home-scroll__section-intro strong {
+  display: block;
+  max-width: 760px;
+  margin-top: 10px;
+  color: #fff;
+  font-size: clamp(34px,4vw,58px);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+
+.home-scroll__section-intro p {
+  max-width: 520px;
+  margin: 0;
+  color: rgba(255,255,255,.62);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Every panel is ordinary document flow. No sticky or artificial scroll height. */
+.home-scroll__panel {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
-  overflow: hidden;
   isolation: isolate;
+  overflow: hidden;
   background: var(--green-deep);
-  box-shadow: 0 -1px 0 rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .home-scroll__media,
@@ -71,27 +93,30 @@
   inset: 0;
 }
 
-.home-scroll__media { z-index: 0; overflow: hidden; }
+.home-scroll__media {
+  z-index: 0;
+  overflow: hidden;
+}
 
 .home-scroll__scene {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
 .home-scroll__veil {
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.88) 38%, rgba(2,29,18,.48) 68%, rgba(2,29,18,.24) 100%),
-    linear-gradient(0deg, rgba(2,29,18,.62) 0%, transparent 52%);
+    linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.89) 39%, rgba(2,29,18,.54) 68%, rgba(2,29,18,.3) 100%),
+    linear-gradient(0deg, rgba(2,29,18,.7) 0%, transparent 56%);
 }
 
 .home-scroll__grain {
   z-index: 2;
   pointer-events: none;
-  opacity: .08;
-  background-image: radial-gradient(rgba(255,255,255,.5) .5px, transparent .7px);
+  opacity: .07;
+  background-image: radial-gradient(rgba(255,255,255,.45) .5px, transparent .7px);
   background-size: 6px 6px;
   mix-blend-mode: soft-light;
 }
@@ -101,11 +126,11 @@
   z-index: 3;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0,1fr) 300px;
-  gap: clamp(50px,7vw,100px);
+  grid-template-columns: minmax(0,1fr) 310px;
+  gap: clamp(54px,7vw,110px);
   align-items: center;
-  padding-top: clamp(118px, 14vh, 160px);
-  padding-bottom: clamp(100px, 12vh, 140px);
+  padding-top: clamp(132px,15vh,170px);
+  padding-bottom: clamp(92px,10vh,120px);
 }
 
 .home-scroll__copy {
@@ -117,16 +142,16 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 28px;
-  color: rgba(255,255,255,.66);
-  font-size: 10px;
+  margin-bottom: 24px;
+  color: rgba(255,255,255,.64);
+  font-size: 9px;
   font-weight: 900;
-  letter-spacing: .18em;
+  letter-spacing: .17em;
 }
 
 .home-scroll__kicker::before {
   content: '';
-  width: 40px;
+  width: 36px;
   height: 1px;
   background: var(--orange);
 }
@@ -141,20 +166,20 @@
 
 .home-scroll__copy h2 {
   max-width: 820px;
-  margin: 18px 0 20px;
+  margin: 17px 0 20px;
   color: #fff !important;
-  font-size: clamp(54px,7vw,100px);
-  line-height: .91;
-  letter-spacing: -.062em;
-  text-shadow: 0 12px 42px rgba(0,0,0,.2);
+  font-size: clamp(54px,7vw,98px);
+  line-height: .92;
+  letter-spacing: -.06em;
+  text-shadow: 0 12px 42px rgba(0,0,0,.22);
 }
 
 .home-scroll__copy p {
   max-width: 650px;
   margin: 0;
-  color: rgba(255,255,255,.74);
+  color: rgba(255,255,255,.75);
   font-size: 16px;
-  line-height: 1.72;
+  line-height: 1.7;
 }
 
 .home-scroll__action { margin-top: 28px; }
@@ -162,6 +187,8 @@
 .home-scroll__rail {
   align-self: center;
   border-left: 1px solid rgba(255,255,255,.18);
+  background: rgba(4,35,22,.14);
+  backdrop-filter: blur(4px);
 }
 
 .home-scroll__rail > div {
@@ -211,11 +238,11 @@
   position: absolute;
   z-index: 4;
   left: max(24px, calc((100vw - min(calc(100% - 48px), var(--container))) / 2));
-  bottom: 28px;
+  bottom: 26px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: rgba(255,255,255,.52);
+  color: rgba(255,255,255,.5);
   font-size: 9px;
   font-weight: 900;
   letter-spacing: .13em;
@@ -238,22 +265,12 @@
   background: var(--orange);
 }
 
-/* Reduced-motion fallback: normal cards, no sticky effect. */
-.home-scroll--static { min-height: 0; padding: 120px 0; }
-.home-scroll--static .section-heading h2 { color: #fff; }
-.home-scroll--static .section-heading h2 em { color: var(--orange); }
-.home-scroll--static .section-heading p { color: rgba(255,255,255,.65); }
-.home-scroll__static-grid {
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  gap: 20px;
-}
-
 /* ---------- Responsive ---------- */
 @media (max-height: 780px) and (min-width: 901px) {
-  .home-scroll__chapter { min-height: 560px; }
-  .home-scroll__layout { padding-top: 94px; padding-bottom: 82px; }
-  .home-scroll__kicker { margin-bottom: 18px; }
+  .home-scroll__layout {
+    padding-top: 104px;
+    padding-bottom: 78px;
+  }
   .home-scroll__copy h2 {
     font-size: clamp(48px,6vw,76px);
     margin: 13px 0 14px;
@@ -264,23 +281,20 @@
 }
 
 @media (max-width: 900px) {
-  .home-scroll__step,
-  .home-scroll__step:last-child {
-    height: auto;
+  .home-scroll__section-intro-inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
-  .home-scroll__chapter {
-    position: relative;
-    top: auto;
-    height: auto;
-    min-height: max(720px, 92svh);
+  .home-scroll__panel {
+    min-height: max(760px, 100svh);
   }
 
   .home-scroll__layout {
     grid-template-columns: 1fr;
     align-content: center;
-    padding-top: 108px;
-    padding-bottom: 142px;
+    padding-top: 118px;
+    padding-bottom: 150px;
   }
 
   .home-scroll__copy { max-width: 720px; }
@@ -304,7 +318,6 @@
     border-bottom: 0;
     border-right: 1px solid rgba(255,255,255,.1);
   }
-
   .home-scroll__rail > div:first-child { border-top: 0; }
   .home-scroll__rail > div::before {
     left: 0;
@@ -323,12 +336,24 @@
   .home-hero--normal { min-height: max(720px,100svh); }
   .home-hero__media--raw-coffee { background-position: 57% center; }
 
-  .home-scroll__chapter { min-height: max(700px, 94svh); }
+  .home-scroll__section-intro {
+    padding: 58px 0 34px;
+  }
+
+  .home-scroll__section-intro-inner {
+    width: min(calc(100% - 28px), var(--container));
+  }
+
+  .home-scroll__panel {
+    min-height: max(720px, 100svh);
+  }
+
   .home-scroll__layout {
     width: min(calc(100% - 28px), var(--container));
-    padding-top: 100px;
+    padding-top: 104px;
     padding-bottom: 136px;
   }
+
   .home-scroll__kicker { margin-bottom: 18px; font-size: 8px; }
   .home-scroll__copy h2 {
     font-size: clamp(42px,12vw,60px);
@@ -348,9 +373,11 @@
   }
   .home-scroll__rail strong,
   .home-scroll__rail span { font-size: 8px; }
-  .home-scroll__static-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-scroll__scene { transform: none !important; }
+  .home-scroll__scene {
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }
