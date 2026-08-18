@@ -1,4 +1,5 @@
-import { FormEvent, useMemo, useState } from 'react';
+import type { FormEvent } from 'react';
+import { useMemo, useState } from 'react';
 import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { PageHero, Reveal, Seo } from '../components/UI';
