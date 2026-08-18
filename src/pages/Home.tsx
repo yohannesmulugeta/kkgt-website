@@ -1,11 +1,9 @@
-import { useRef, useState } from 'react';
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ImageLinkCard, InquiryBand, Reveal, SectionHeading, Seo } from '../components/UI';
 import { businessAreas, company, processSteps } from '../data/company';
 import { coffeeOrigins } from '../data/catalog';
-import '../journey.css';
 
 const RAW_COFFEE_IMAGE = 'https://images.pexels.com/photos/7125601/pexels-photo-7125601.jpeg?auto=compress&cs=tinysrgb&w=2200';
 
@@ -23,19 +21,7 @@ const scrollBusinesses = businessAreas.map((area, index) => ({
 }));
 
 function CinematicBusinessScroll() {
-  const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
-
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    if (reduceMotion) return;
-    const next = Math.min(scrollBusinesses.length - 1, Math.floor(latest * scrollBusinesses.length));
-    setActiveIndex((current) => (current === next ? current : next));
-  });
 
   if (reduceMotion) {
     return (
@@ -59,66 +45,64 @@ function CinematicBusinessScroll() {
   }
 
   return (
-    <section ref={sectionRef} className="home-scroll" aria-label="Scroll through KKGT business lines">
-      <div className="home-scroll__sticky">
-        <div className="home-scroll__media" aria-hidden="true">
-          {scrollBusinesses.map((area, index) => (
+    <section className="home-scroll" aria-label="Scroll through KKGT business lines">
+      {scrollBusinesses.map((area, index) => (
+        <article
+          key={area.to}
+          className={`home-scroll__chapter home-scroll__chapter--${index + 1}`}
+          style={{ zIndex: index + 1 }}
+        >
+          <div className="home-scroll__media" aria-hidden="true">
             <motion.div
-              key={area.to}
               className="home-scroll__scene"
               style={{ backgroundImage: `url(${area.image})` }}
-              animate={{
-                opacity: activeIndex === index ? 1 : 0,
-                scale: activeIndex === index ? 1.02 : 1.08,
-              }}
-              transition={{ duration: .65, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ scale: 1.055 }}
+              whileInView={{ scale: 1.015 }}
+              viewport={{ once: false, amount: .45 }}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
             />
-          ))}
-          <div className="home-scroll__veil" />
-          <div className="home-scroll__grain" />
-        </div>
+            <div className="home-scroll__veil" />
+            <div className="home-scroll__grain" />
+          </div>
 
-        <div className="container home-scroll__layout">
-          <div className="home-scroll__intro">
-            <span className="home-scroll__kicker">ONE COMPANY · FOUR BUSINESS LINES</span>
-            <div className="home-scroll__copy-stack">
-              {scrollBusinesses.map((area, index) => (
-                <motion.div
-                  key={area.to}
-                  className={`home-scroll__copy${activeIndex === index ? ' is-active' : ''}`}
-                  animate={{
-                    opacity: activeIndex === index ? 1 : 0,
-                    y: activeIndex === index ? 0 : 22,
-                  }}
-                  transition={{ duration: .45, ease: [0.22, 1, 0.36, 1] }}
-                  aria-hidden={activeIndex !== index}
-                >
-                  <span className="home-scroll__number">0{index + 1} / 04 · {area.scrollEyebrow}</span>
-                  <h2>{area.scrollTitle}</h2>
-                  <p>{area.scrollCopy}</p>
-                  <Link to={area.to} className="button button--orange home-scroll__action">
-                    Explore {index === 0 ? 'coffee export' : area.title.toLowerCase()} <ArrowUpRight size={17} aria-hidden="true" />
-                  </Link>
-                </motion.div>
+          <div className="container home-scroll__layout">
+            <motion.div
+              className="home-scroll__copy"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: .55 }}
+              transition={{ duration: .58, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span className="home-scroll__kicker">ONE COMPANY · FOUR BUSINESS LINES</span>
+              <span className="home-scroll__number">0{index + 1} / 04 · {area.scrollEyebrow}</span>
+              <h2>{area.scrollTitle}</h2>
+              <p>{area.scrollCopy}</p>
+              <Link to={area.to} className="button button--orange home-scroll__action">
+                Explore {index === 0 ? 'coffee export' : area.title.toLowerCase()} <ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+            </motion.div>
+
+            <div className="home-scroll__rail" aria-hidden="true">
+              {scrollBusinesses.map((railArea, railIndex) => (
+                <div key={railArea.to} className={railIndex === index ? 'is-active' : ''}>
+                  <span>0{railIndex + 1}</span>
+                  <strong>{railArea.scrollTitle}</strong>
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="home-scroll__rail" aria-hidden="true">
-            {scrollBusinesses.map((area, index) => (
-              <div key={area.to} className={activeIndex === index ? 'is-active' : ''}>
-                <span>0{index + 1}</span>
-                <strong>{area.scrollTitle}</strong>
-              </div>
-            ))}
-          </div>
-        </div>
+          {index === 0 ? (
+            <div className="home-scroll__hint" aria-hidden="true">
+              <ArrowDownRight size={15} /> Scroll to move through the portfolio
+            </div>
+          ) : null}
 
-        <div className="home-scroll__hint" aria-hidden="true">
-          <ArrowDownRight size={15} /> Scroll to move through the portfolio
-        </div>
-        <motion.div className="home-scroll__progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
-      </div>
+          <div className="home-scroll__progress" aria-hidden="true">
+            <span style={{ width: `${((index + 1) / scrollBusinesses.length) * 100}%` }} />
+          </div>
+        </article>
+      ))}
     </section>
   );
 }
