@@ -31,6 +31,110 @@ function sceneOpacity(progress: number, index: number, total: number) {
   return opacity;
 }
 
+function InteractiveHero() {
+  const heroRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeArea = businessAreas[activeIndex];
+
+  return (
+    <section
+      ref={heroRef}
+      className="home-hero home-hero--interactive"
+      onPointerMove={(event) => {
+        if (reduceMotion || event.pointerType === 'touch') return;
+        const rect = event.currentTarget.getBoundingClientRect();
+        const x = clamp01((event.clientX - rect.left) / Math.max(rect.width, 1));
+        const y = clamp01((event.clientY - rect.top) / Math.max(rect.height, 1));
+        event.currentTarget.style.setProperty('--hero-x', `${(x - 0.5) * 2}`);
+        event.currentTarget.style.setProperty('--hero-y', `${(y - 0.5) * 2}`);
+      }}
+      onPointerLeave={(event) => {
+        event.currentTarget.style.setProperty('--hero-x', '0');
+        event.currentTarget.style.setProperty('--hero-y', '0');
+      }}
+    >
+      <div className="interactive-hero__media" aria-hidden="true">
+        {businessAreas.map((area, index) => (
+          <div
+            key={area.to}
+            className={`interactive-hero__scene${index === activeIndex ? ' is-active' : ''}`}
+            style={{ backgroundImage: `url(${area.image})` }}
+          />
+        ))}
+      </div>
+      <div className="interactive-hero__veil" aria-hidden="true" />
+      <div className="interactive-hero__glow" aria-hidden="true" />
+
+      <div className="container home-hero__content interactive-hero__layout">
+        <motion.div
+          className="interactive-hero__copy"
+          initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={reduceMotion ? { duration: 0 } : { duration: .72, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="eyebrow eyebrow--light">ETHIOPIA · IMPORT · EXPORT</span>
+          <h1>Rooted in Ethiopia.<br /><em>Trading with the world.</em></h1>
+          <p>KKGT connects Ethiopian agricultural value with domestic and international markets through coffee and commodity exports, agrochemical distribution, and diversified import trading.</p>
+          <div className="hero-actions">
+            <Link to="/contact" className="button button--orange">Start an inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
+            <Link to={activeArea.to} className="text-action">Explore {activeArea.title.toLowerCase()} <ArrowDownRight size={18} aria-hidden="true" /></Link>
+          </div>
+          <div className="interactive-hero__active" aria-live="polite">
+            <span>0{activeIndex + 1} · {activeArea.eyebrow}</span>
+            <strong>{activeArea.title}</strong>
+            <p>{activeArea.description}</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="interactive-hero__portal-wrap"
+          initial={reduceMotion ? false : { opacity: 0, scale: .92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={reduceMotion ? { duration: 0 } : { duration: .9, delay: .14, ease: [0.22, 1, 0.36, 1] }}
+          aria-hidden="true"
+        >
+          <div className="interactive-hero__orbit interactive-hero__orbit--one" />
+          <div className="interactive-hero__orbit interactive-hero__orbit--two" />
+          <div className="interactive-hero__portal">
+            {businessAreas.map((area, index) => (
+              <div
+                key={area.to}
+                className={`interactive-hero__portal-image${index === activeIndex ? ' is-active' : ''}`}
+                style={{ backgroundImage: `url(${area.image})` }}
+              />
+            ))}
+            <div className="interactive-hero__portal-shade" />
+            <div className="interactive-hero__portal-label">
+              <span>KKGT</span>
+              <strong>{activeArea.title}</strong>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <nav className="interactive-hero__businesses" aria-label="Explore KKGT businesses">
+        <div className="container interactive-hero__businesses-inner">
+          {businessAreas.map((area, index) => (
+            <Link
+              key={area.to}
+              to={area.to}
+              className={index === activeIndex ? 'is-active' : ''}
+              onMouseEnter={() => setActiveIndex(index)}
+              onFocus={() => setActiveIndex(index)}
+              onTouchStart={() => setActiveIndex(index)}
+            >
+              <span>0{index + 1}</span>
+              <strong>{area.title}</strong>
+              <ArrowUpRight size={15} aria-hidden="true" />
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </section>
+  );
+}
+
 function CinematicBusinessJourney() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
@@ -178,36 +282,66 @@ function CinematicBusinessJourney() {
   );
 }
 
-export function Home() {
-  const reduceMotion = useReducedMotion();
+const processVisuals = [
+  businessAreas[0].image,
+  businessAreas[1].image,
+  businessAreas[2].image,
+  businessAreas[3].image,
+  businessAreas[0].image,
+];
 
+function SourceToMarketStory() {
+  const [activeStep, setActiveStep] = useState(0);
+  const [number, title, copy] = processSteps[activeStep];
+
+  return (
+    <div className="market-story">
+      <div className="market-story__visual" aria-hidden="true">
+        {processVisuals.map((image, index) => (
+          <div
+            key={`${image}-${index}`}
+            className={`market-story__image${index === activeStep ? ' is-active' : ''}`}
+            style={{ backgroundImage: `url(${image})` }}
+          />
+        ))}
+        <div className="market-story__shade" />
+        <div className="market-story__visual-copy">
+          <span>{number} · KKGT WORKFLOW</span>
+          <strong>{title}</strong>
+          <p>{copy}</p>
+        </div>
+      </div>
+
+      <div className="market-story__steps" role="list" aria-label="KKGT source to market process">
+        {processSteps.map(([no, stepTitle, stepCopy], index) => (
+          <button
+            key={no}
+            type="button"
+            role="listitem"
+            className={index === activeStep ? 'is-active' : ''}
+            onMouseEnter={() => setActiveStep(index)}
+            onFocus={() => setActiveStep(index)}
+            onClick={() => setActiveStep(index)}
+          >
+            <span>{no}</span>
+            <div>
+              <strong>{stepTitle}</strong>
+              <p>{stepCopy}</p>
+            </div>
+            <i aria-hidden="true" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function Home() {
   return (
     <>
       <Seo title="KKGT Import Export | Ethiopia" description="KKGT connects Ethiopian coffee, agricultural commodities, crop-protection products and diversified trading opportunities with local and international markets." />
-      <section className="home-hero">
-        <div className="home-hero__media" aria-hidden="true">
-          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=88" alt="" fetchPriority="high" decoding="async" />
-        </div>
-        <div className="home-hero__overlay" />
-        <div className="container home-hero__content">
-          <motion.div
-            initial={reduceMotion ? false : { opacity: 0, y: 26 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={reduceMotion ? { duration: 0 } : { duration: .72, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="eyebrow eyebrow--light">ETHIOPIA · IMPORT · EXPORT</span>
-            <h1>Rooted in Ethiopia.<br /><em>Trading with the world.</em></h1>
-            <p>KKGT connects Ethiopian agricultural value with domestic and international markets through coffee and commodity exports, agrochemical distribution, and diversified import trading.</p>
-            <div className="hero-actions">
-              <Link to="/contact" className="button button--orange">Start an inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
-              <Link to="/coffee" className="text-action">Explore our businesses <ArrowDownRight size={18} aria-hidden="true" /></Link>
-            </div>
-          </motion.div>
-        </div>
-        <div className="home-hero__rail" aria-hidden="true">
-          <span>COFFEE</span><span>COMMODITIES</span><span>AGROCHEMICALS</span><span>TRADING</span>
-        </div>
-      </section>
+
+      <InteractiveHero />
 
       <section className="section section--paper">
         <div className="container split-intro">
@@ -244,14 +378,10 @@ export function Home() {
         </div>
       </section>
 
-      <section className="section section--paper">
+      <section className="section section--paper market-story-section">
         <div className="container">
-          <Reveal><SectionHeading eyebrow="HOW KKGT WORKS" title="From source" accent="to market." copy="A simple operating story helps customers understand how sourcing, quality and trade fit together." /></Reveal>
-          <div className="process-grid">
-            {processSteps.map(([no, title, copy], index) => (
-              <Reveal key={no} delay={index * .04} className="process-card"><span>{no}</span><strong>{title}</strong><p>{copy}</p></Reveal>
-            ))}
-          </div>
+          <Reveal><SectionHeading eyebrow="HOW KKGT WORKS" title="From source" accent="to market." copy="Move through the workflow to see how sourcing, preparation, quality, trade and delivery connect." /></Reveal>
+          <Reveal delay={.08}><SourceToMarketStory /></Reveal>
         </div>
       </section>
 
