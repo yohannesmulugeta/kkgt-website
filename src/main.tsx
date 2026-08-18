@@ -5,6 +5,7 @@ import App from './App';
 import './styles.css';
 import './overrides.css';
 import './fixes.css';
+import './cinematic.css';
 
 function ScrollManager() {
   const { pathname } = useLocation();
