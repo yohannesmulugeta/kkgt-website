@@ -31,7 +31,11 @@ jobs:
       - name: Build React site
         run: npm run build
       - name: Copy KKGT brand assets
-        run: cp -R assets dist/assets
+        run: |
+          mkdir -p dist/assets
+          cp -R assets/. dist/assets/
+      - name: Verify KKGT logo exists
+        run: test -f dist/assets/kkgt-logo.svg
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
