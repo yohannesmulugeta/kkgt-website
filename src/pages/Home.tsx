@@ -23,6 +23,7 @@ const scrollBusinesses = businessAreas.map((area, index) => ({
 
 function CinematicBusinessScroll() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const lastStageChangeAt = useRef(0);
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const { scrollYProgress } = useScroll({
@@ -32,11 +33,27 @@ function CinematicBusinessScroll() {
 
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
     if (reduceMotion) return;
-    const nextIndex = Math.min(
-      scrollBusinesses.length - 1,
-      Math.floor(Math.max(0, Math.min(0.999999, latest)) * scrollBusinesses.length),
-    );
-    setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
+
+    const progress = Math.max(0, Math.min(1, latest));
+    const targetIndex = progress < 0.17
+      ? 0
+      : progress < 0.45
+        ? 1
+        : progress < 0.73
+          ? 2
+          : 3;
+    const now = Date.now();
+
+    setActiveIndex((current) => {
+      if (current === targetIndex) return current;
+
+      // A fast wheel/trackpad gesture may jump across several progress ranges.
+      // Advance only one business at a time and give every scene time to render.
+      if (now - lastStageChangeAt.current < 520) return current;
+
+      lastStageChangeAt.current = now;
+      return current + (targetIndex > current ? 1 : -1);
+    });
   });
 
   if (reduceMotion) {
@@ -133,11 +150,9 @@ function CinematicBusinessScroll() {
             <ArrowDownRight size={15} /> Scroll to transform the portfolio
           </div>
 
-          <motion.div
-            className="home-scroll__progress"
-            style={{ scaleX: scrollYProgress }}
-            aria-hidden="true"
-          />
+          <div className="home-scroll__progress" aria-hidden="true">
+            <span style={{ width: `${((activeIndex + 1) / scrollBusinesses.length) * 100}%` }} />
+          </div>
         </div>
       </div>
     </section>
