@@ -20,6 +20,15 @@ const navGroups = [
   { label: 'Contact', to: '/contact' },
 ] as const;
 
+const mobileLinks = [
+  ['01', 'About KKGT', '/about'],
+  ['02', 'Coffee Export', '/coffee'],
+  ['03', 'Agricultural Commodities', '/commodities'],
+  ['04', 'Agrochemicals', '/agrochemicals'],
+  ['05', 'Import & Trading', '/trading'],
+  ['06', 'Quality & Operations', '/quality'],
+] as const;
+
 function Logo({ inverted = false }: { inverted?: boolean }) {
   const base = import.meta.env.BASE_URL;
   return <span className={`logo-lockup ${inverted ? 'logo-lockup--inverted' : ''}`}><img src={`${base}assets/kkgt-logo.svg`} alt="KKGT Import Export" width="320" height="108" decoding="async" /></span>;
@@ -60,7 +69,7 @@ function Header() {
   }, [open]);
 
   return (
-    <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
+    <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-menu-open' : ''}`}>
       <div className="container nav-bar">
         <Link to="/" aria-label="KKGT home" className="brand-link"><Logo /></Link>
         <nav className="desktop-nav" aria-label="Primary navigation">
@@ -86,11 +95,32 @@ function Header() {
         <Link to="/contact" className="nav-cta desktop-only">Start an inquiry <ArrowUpRight size={15} aria-hidden="true" /></Link>
         <button className="menu-button" type="button" aria-label={open ? 'Close navigation' : 'Open navigation'} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen((value) => !value)}>{open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}</button>
       </div>
+
       <AnimatePresence>
         {open && (
-          <motion.div id="mobile-navigation" className="mobile-menu" initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.18 }}>
+          <motion.div id="mobile-navigation" className="mobile-menu mobile-menu--premium" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
+            <div className="mobile-menu__backdrop" aria-hidden="true" />
             <nav className="container mobile-menu__inner" aria-label="Mobile navigation">
-              <Link to="/about">About</Link><span className="mobile-menu__label">BUSINESSES</span><Link to="/coffee">Coffee Export</Link><Link to="/commodities">Agricultural Commodities</Link><Link to="/agrochemicals">Agrochemicals</Link><Link to="/trading">Import & Trading</Link><Link to="/quality">Quality & Operations</Link><Link to="/contact" className="mobile-menu__cta">Start an inquiry <ArrowUpRight size={16} aria-hidden="true" /></Link>
+              <motion.div className="mobile-menu__intro" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .32, delay: .04 }}>
+                <span>KKGT IMPORT EXPORT</span>
+                <strong>Rooted in Ethiopia.<br /><em>Trading with the world.</em></strong>
+                <p>Explore KKGT’s coffee, agricultural commodities, crop-protection and trading businesses.</p>
+              </motion.div>
+
+              <motion.div className="mobile-menu__links" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .34, delay: .09 }}>
+                {mobileLinks.map(([no, label, to]) => (
+                  <Link to={to} key={to}>
+                    <span>{no}</span>
+                    <strong>{label}</strong>
+                    <ArrowUpRight size={17} aria-hidden="true" />
+                  </Link>
+                ))}
+                <Link to="/contact" className="mobile-menu__cta">
+                  <span>07</span>
+                  <strong>Start an inquiry</strong>
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                </Link>
+              </motion.div>
             </nav>
           </motion.div>
         )}
