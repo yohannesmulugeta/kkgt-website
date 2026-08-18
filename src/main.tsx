@@ -4,10 +4,7 @@ import { BrowserRouter, useLocation } from 'react-router-dom';
 import App from './App';
 import './styles.css';
 import './overrides.css';
-import './cinematic.css';
-import './interaction-fixes.css';
-import './business-story.css';
-import './fixes.css';
+import './site.css';
 
 function ScrollManager() {
   const { pathname } = useLocation();
