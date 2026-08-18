@@ -192,50 +192,63 @@ function ConnectedBusinessJourney() {
       </div>
 
       <div className="connected-journey__flow">
-        <div className="connected-journey__spine" aria-hidden="true" />
         {businessStories.map((story, businessIndex) => (
-          <section className="journey-business" key={story.index} aria-labelledby={`journey-business-${story.index}`}>
-            <div className="container journey-business__header">
-              <div className="journey-business__number">{story.index}</div>
-              <div>
-                <span className="eyebrow eyebrow--light">{story.eyebrow}</span>
+          <section
+            className={`journey-business journey-business--${businessIndex + 1}`}
+            key={story.index}
+            aria-labelledby={`journey-business-${story.index}`}
+          >
+            <div className="container journey-business__shell">
+              <aside className="journey-business__sticky">
+                <div className="journey-business__identity">
+                  <span className="journey-business__number">{story.index}</span>
+                  <span className="journey-business__eyebrow">{story.eyebrow}</span>
+                </div>
                 <h2 id={`journey-business-${story.index}`}>{story.title}</h2>
                 <p>{story.intro}</p>
-                <Link to={story.to} className="journey-business__explore">Explore this business <ArrowUpRight size={16} aria-hidden="true" /></Link>
-              </div>
-            </div>
+                <div className="journey-business__story-count" aria-hidden="true">
+                  <span>03 PART STORY</span>
+                  <i /><i /><i />
+                </div>
+                <Link to={story.to} className="journey-business__explore">
+                  Explore this business <ArrowUpRight size={16} aria-hidden="true" />
+                </Link>
+              </aside>
 
-            <div className="container journey-business__stages">
-              {story.stages.map((stage, stageIndex) => (
-                <article className={`journey-stage${stageIndex % 2 ? ' journey-stage--reverse' : ''}`} key={stage.number}>
-                  <motion.div
-                    className="journey-stage__copy"
-                    initial={reduceMotion ? false : { opacity: 0, y: 28 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: .42 }}
-                    transition={reduceMotion ? { duration: 0 } : { duration: .58, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <div className="journey-stage__meta"><span>{stage.number}</span><span>{stage.eyebrow}</span></div>
-                    <h3>{stage.title}</h3>
-                    <p>{stage.copy}</p>
-                  </motion.div>
-
-                  <motion.figure
-                    className="journey-stage__visual"
-                    initial={reduceMotion ? false : { opacity: 0, scale: 1.035, y: 24 }}
-                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                    viewport={{ once: false, amount: .35 }}
-                    transition={reduceMotion ? { duration: 0 } : { duration: .78, ease: [0.22, 1, 0.36, 1] }}
+              <div className="journey-business__stages">
+                {story.stages.map((stage, stageIndex) => (
+                  <motion.article
+                    className="journey-stage"
+                    key={stage.number}
+                    initial={reduceMotion ? false : { opacity: 0, y: 36, scale: .985 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: false, amount: .3 }}
+                    transition={reduceMotion ? { duration: 0 } : { duration: .68, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <div
                       className="journey-stage__image"
                       style={{ backgroundImage: `url(${stage.image})`, backgroundPosition: stage.position }}
+                      aria-hidden="true"
                     />
                     <div className="journey-stage__shade" aria-hidden="true" />
-                    <figcaption><span>KKGT · {story.index}</span><strong>{stage.label}</strong></figcaption>
-                  </motion.figure>
-                </article>
-              ))}
+
+                    <div className="journey-stage__topline">
+                      <div className="journey-stage__meta"><span>{stage.number}</span><span>{stage.eyebrow}</span></div>
+                      <span>{String(stageIndex + 1).padStart(2, '0')} / 03</span>
+                    </div>
+
+                    <div className="journey-stage__copy">
+                      <h3>{stage.title}</h3>
+                      <p>{stage.copy}</p>
+                    </div>
+
+                    <div className="journey-stage__caption" aria-hidden="true">
+                      <span>KKGT · {story.index}</span>
+                      <strong>{stage.label}</strong>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
             </div>
 
             {story.bridge ? (
