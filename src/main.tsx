@@ -6,6 +6,7 @@ import './styles.css';
 import './overrides.css';
 import './fixes.css';
 import './cinematic.css';
+import './interaction-fixes.css';
 
 function ScrollManager() {
   const { pathname } = useLocation();
