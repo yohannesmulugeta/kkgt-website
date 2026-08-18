@@ -20,22 +20,38 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
+
       - name: Build React site
         run: npm run build
+
       - name: Copy KKGT brand assets
         run: |
           mkdir -p dist/assets
           cp -R assets/. dist/assets/
-      - name: Verify KKGT logo exists
-        run: test -f dist/assets/kkgt-logo.svg
+
+      - name: Add SPA fallback for direct routes
+        run: cp dist/index.html dist/404.html
+
+      - name: Verify production bundle
+        run: |
+          test -f dist/index.html
+          test -f dist/404.html
+          test -f dist/assets/kkgt-logo.svg
+          find dist/assets -type f -name '*.css' | grep -q .
+          find dist/assets -type f -name '*.js' | grep -q .
+          grep -q 'kkgt-website' dist/index.html
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
