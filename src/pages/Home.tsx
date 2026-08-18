@@ -17,46 +17,32 @@ const homeBusinessAreas = businessAreas.map((area, index) => ({
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
-function sceneOpacity(progress: number, index: number, total: number) {
-  const span = 1 / total;
-  const start = index * span;
-  const end = (index + 1) * span;
-  const fade = span * 0.22;
-  const fadeInStart = start - fade;
-  const fadeInEnd = start + fade;
-  const fadeOutStart = end - fade;
-  const fadeOutEnd = end + fade;
-
-  if (progress < fadeInStart || progress > fadeOutEnd) return 0;
-
-  let opacity = 1;
-  if (index > 0 && progress < fadeInEnd) {
-    opacity = clamp01((progress - fadeInStart) / (fadeInEnd - fadeInStart));
-  }
-  if (index < total - 1 && progress > fadeOutStart) {
-    opacity = Math.min(opacity, clamp01((fadeOutEnd - progress) / (fadeOutEnd - fadeOutStart)));
-  }
-
-  return opacity;
-}
-
 function ScrollBusinessHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduceMotion = useReducedMotion();
   const [progress, setProgress] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (reduceMotion) return;
-
     let frame = 0;
+
     const update = () => {
       frame = 0;
       const section = sectionRef.current;
       if (!section) return;
 
       const rect = section.getBoundingClientRect();
-      const travel = Math.max(section.offsetHeight - window.innerHeight, 1);
-      setProgress(clamp01(-rect.top / travel));
+      const viewport = Math.max(window.innerHeight, 1);
+      const travel = Math.max(section.offsetHeight - viewport, 1);
+      const scrolled = Math.min(travel, Math.max(0, -rect.top));
+      const nextProgress = clamp01(scrolled / travel);
+      const nextIndex = Math.min(
+        homeBusinessAreas.length - 1,
+        Math.max(0, Math.floor((scrolled + viewport * 0.46) / viewport)),
+      );
+
+      setProgress(nextProgress);
+      setActiveIndex(nextIndex);
     };
 
     const requestUpdate = () => {
@@ -72,103 +58,97 @@ function ScrollBusinessHero() {
       window.removeEventListener('resize', requestUpdate);
       if (frame) window.cancelAnimationFrame(frame);
     };
-  }, [reduceMotion]);
+  }, []);
 
-  const total = homeBusinessAreas.length;
-  const activeIndex = Math.min(total - 1, Math.floor(progress * total));
   const activeArea = homeBusinessAreas[activeIndex];
 
   return (
     <section ref={sectionRef} className="scroll-business-hero" aria-label="KKGT businesses from Ethiopia to market">
-      <div className="scroll-business-hero__sticky">
-        <div className="scroll-business-hero__media" aria-hidden="true">
-          {homeBusinessAreas.map((area, index) => {
-            const span = 1 / total;
-            const local = clamp01((progress - index * span) / span);
-            const opacity = reduceMotion ? (index === 0 ? 1 : 0) : sceneOpacity(progress, index, total);
-            const scale = 1.08 - local * 0.045;
-            const translateX = (0.5 - local) * 1.8;
+      <div className="scroll-business-hero__sticky" aria-hidden="true">
+        <div className="scroll-business-hero__media">
+          {homeBusinessAreas.map((area, index) => (
+            <div
+              key={area.to}
+              className={`scroll-business-hero__scene${index === activeIndex ? ' is-active' : ''}`}
+              style={{ backgroundImage: `url(${area.image})` }}
+            />
+          ))}
+        </div>
+        <div className="scroll-business-hero__veil" />
+        <div className="scroll-business-hero__texture" />
 
-            return (
+        <div className="scroll-business-hero__visual">
+          <div className="scroll-business-hero__orbit scroll-business-hero__orbit--outer" />
+          <div className="scroll-business-hero__orbit scroll-business-hero__orbit--inner" />
+          <div className="scroll-business-hero__portal">
+            {homeBusinessAreas.map((area, index) => (
               <div
                 key={area.to}
-                className="scroll-business-hero__scene"
-                style={{
-                  backgroundImage: `url(${area.image})`,
-                  opacity,
-                  transform: `translate3d(${translateX}%, 0, 0) scale(${scale})`,
-                }}
+                className={`scroll-business-hero__portal-image${index === activeIndex ? ' is-active' : ''}`}
+                style={{ backgroundImage: `url(${area.image})` }}
               />
-            );
-          })}
-        </div>
-        <div className="scroll-business-hero__veil" aria-hidden="true" />
-        <div className="scroll-business-hero__texture" aria-hidden="true" />
-
-        <div className="container scroll-business-hero__layout">
-          <motion.div
-            className="scroll-business-hero__copy"
-            initial={reduceMotion ? false : { opacity: 0, y: 26 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={reduceMotion ? { duration: 0 } : { duration: .72, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="eyebrow eyebrow--light">ETHIOPIA · IMPORT · EXPORT</span>
-            <h1><span>Rooted in Ethiopia.</span><br /><em>Trading with the world.</em></h1>
-            <p className="scroll-business-hero__lead">KKGT connects Ethiopian agricultural value with domestic and international markets through export, agricultural supply and diversified trading.</p>
-
-            <div className="scroll-business-hero__stage" aria-live="polite">
-              <div className="scroll-business-hero__stage-meta">
-                <span>0{activeIndex + 1}</span>
-                <span>{activeArea.heroEyebrow}</span>
-              </div>
+            ))}
+            <div className="scroll-business-hero__portal-shade" />
+            <div className="scroll-business-hero__portal-copy">
+              <span>KKGT · 0{activeIndex + 1}</span>
               <strong>{activeArea.heroTitle}</strong>
-              <p>{activeArea.description}</p>
-              <Link to={activeArea.to} className="scroll-business-hero__stage-link">
-                Explore this business <ArrowUpRight size={16} aria-hidden="true" />
-              </Link>
-            </div>
-
-            <div className="hero-actions">
-              <Link to="/contact" className="button button--orange">Start an inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
-              <span className="scroll-business-hero__hint">Keep scrolling to explore <ArrowDownRight size={17} aria-hidden="true" /></span>
-            </div>
-          </motion.div>
-
-          <div className="scroll-business-hero__visual" aria-hidden="true">
-            <div className="scroll-business-hero__orbit scroll-business-hero__orbit--outer" />
-            <div className="scroll-business-hero__orbit scroll-business-hero__orbit--inner" />
-            <div className="scroll-business-hero__portal">
-              {homeBusinessAreas.map((area, index) => (
-                <div
-                  key={area.to}
-                  className="scroll-business-hero__portal-image"
-                  style={{
-                    backgroundImage: `url(${area.image})`,
-                    opacity: reduceMotion ? (index === 0 ? 1 : 0) : sceneOpacity(progress, index, total),
-                  }}
-                />
-              ))}
-              <div className="scroll-business-hero__portal-shade" />
-              <div className="scroll-business-hero__portal-copy">
-                <span>KKGT · 0{activeIndex + 1}</span>
-                <strong>{activeArea.heroTitle}</strong>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className="scroll-business-hero__rail" aria-label="KKGT business pages">
+        <div className="scroll-business-hero__rail">
           <div className="container scroll-business-hero__rail-inner">
             {homeBusinessAreas.map((area, index) => (
-              <Link key={area.to} to={area.to} className={index === activeIndex ? 'is-active' : ''} aria-current={index === activeIndex ? 'step' : undefined}>
+              <div key={area.to} className={index === activeIndex ? 'is-active' : ''}>
                 <span>0{index + 1}</span>
                 <strong>{area.heroTitle}</strong>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
 
-        <div className="scroll-business-hero__progress" aria-hidden="true"><span style={{ transform: `scaleX(${progress})` }} /></div>
+        <div className="scroll-business-hero__progress"><span style={{ transform: `scaleX(${progress})` }} /></div>
+      </div>
+
+      <div className="scroll-business-hero__chapters">
+        {homeBusinessAreas.map((area, index) => (
+          <article key={area.to} className={`scroll-business-hero__chapter${index === 0 ? ' scroll-business-hero__chapter--intro' : ''}`}>
+            <div className="container scroll-business-hero__chapter-layout">
+              {index === 0 ? (
+                <motion.div
+                  className="scroll-business-hero__chapter-copy scroll-business-hero__chapter-copy--intro"
+                  initial={reduceMotion ? false : { opacity: 0, y: 26 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={reduceMotion ? { duration: 0 } : { duration: .72, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <span className="eyebrow eyebrow--light">ETHIOPIA · IMPORT · EXPORT</span>
+                  <h1><span>Rooted in Ethiopia.</span><br /><em>Trading with the world.</em></h1>
+                  <p className="scroll-business-hero__lead">KKGT connects Ethiopian agricultural value with domestic and international markets through export, agricultural supply and diversified trading.</p>
+
+                  <div className="scroll-business-hero__chapter-card">
+                    <div className="scroll-business-hero__stage-meta"><span>01</span><span>{area.heroEyebrow}</span></div>
+                    <strong>{area.heroTitle}</strong>
+                    <p>{area.description}</p>
+                    <Link to={area.to}>Explore coffee export <ArrowUpRight size={16} aria-hidden="true" /></Link>
+                  </div>
+
+                  <div className="hero-actions">
+                    <Link to="/contact" className="button button--orange">Start an inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
+                    <span className="scroll-business-hero__hint">Scroll to discover the business <ArrowDownRight size={17} aria-hidden="true" /></span>
+                  </div>
+                </motion.div>
+              ) : (
+                <div className="scroll-business-hero__chapter-copy">
+                  <div className="scroll-business-hero__stage-meta"><span>0{index + 1}</span><span>{area.heroEyebrow}</span></div>
+                  <h2>{area.heroTitle}</h2>
+                  <p className="scroll-business-hero__chapter-description">{area.description}</p>
+                  <Link to={area.to} className="scroll-business-hero__chapter-link">Explore {area.title.toLowerCase()} <ArrowUpRight size={17} aria-hidden="true" /></Link>
+                  <span className="scroll-business-hero__chapter-count">0{index + 1} / 04</span>
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -215,10 +195,7 @@ function SourceToMarketStory() {
             onClick={() => setActiveStep(index)}
           >
             <span>{no}</span>
-            <div>
-              <strong>{stepTitle}</strong>
-              <p>{stepCopy}</p>
-            </div>
+            <div><strong>{stepTitle}</strong><p>{stepCopy}</p></div>
             <i aria-hidden="true" />
           </button>
         ))}
