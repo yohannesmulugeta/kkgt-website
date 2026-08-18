@@ -91,7 +91,7 @@ function BusinessStory() {
             </motion.div>
           </div>
 
-          <div className="business-story__rail" aria-label="KKGT business journey">
+          <div className="business-story__rail" aria-hidden="true">
             <div className="container business-story__rail-inner">
               {homeBusinessAreas.map((railArea, railIndex) => (
                 <div key={railArea.to} className={railIndex === index ? 'is-active' : ''}>
@@ -137,12 +137,12 @@ function SourceToMarketStory() {
         </div>
       </div>
 
-      <div className="market-story__steps" role="list" aria-label="KKGT source to market process">
+      <div className="market-story__steps" aria-label="KKGT source to market process">
         {processSteps.map(([no, stepTitle, stepCopy], index) => (
           <button
             key={no}
             type="button"
-            role="listitem"
+            aria-pressed={index === activeStep}
             className={index === activeStep ? 'is-active' : ''}
             onFocus={() => setActiveStep(index)}
             onClick={() => setActiveStep(index)}
