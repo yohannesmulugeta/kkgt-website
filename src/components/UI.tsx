@@ -56,7 +56,19 @@ export function SectionHeading({ eyebrow, title, accent, copy, dark = false }: {
   );
 }
 
-export function ImageLinkCard({ to, eyebrow, title, copy, image, index }: { to: string; eyebrow: string; title: string; copy: string; image: string; index?: string }) {
+type ImageLinkCardProps = {
+  to: string;
+  eyebrow: string;
+  title: string;
+  image: string;
+  index?: string;
+  copy?: string;
+  description?: string;
+};
+
+export function ImageLinkCard({ to, eyebrow, title, copy, description, image, index }: ImageLinkCardProps) {
+  const cardCopy = copy ?? description ?? '';
+
   return (
     <Link to={to} className="image-link-card">
       <div className="image-link-card__media" style={{ backgroundImage: `url(${image})` }} />
@@ -65,7 +77,7 @@ export function ImageLinkCard({ to, eyebrow, title, copy, image, index }: { to: 
       <div className="image-link-card__content">
         <span>{eyebrow}</span>
         <h3>{title}</h3>
-        <p>{copy}</p>
+        {cardCopy ? <p>{cardCopy}</p> : null}
         <div className="image-link-card__action">Explore <ArrowUpRight size={18} /></div>
       </div>
     </Link>
