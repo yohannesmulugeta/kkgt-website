@@ -21,6 +21,9 @@ export default function App() {
         <Route path="commodities" element={<Commodities />} />
         <Route path="commodities/:slug" element={<CommodityDetail />} />
         <Route path="agrochemicals" element={<Agrochemicals />} />
+        <Route path="agrochemicals/fungicides" element={<Agrochemicals initialCategory="Fungicide" />} />
+        <Route path="agrochemicals/herbicides" element={<Agrochemicals initialCategory="Herbicide" />} />
+        <Route path="agrochemicals/insecticides" element={<Agrochemicals initialCategory="Insecticide" />} />
         <Route path="agrochemicals/product/:slug" element={<ProductDetail />} />
         <Route path="trading" element={<Trading />} />
         <Route path="quality" element={<Quality />} />
