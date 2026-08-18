@@ -3,23 +3,27 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "dev": "vite",
+    "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "framer-motion": "^13.0.0",
-    "lucide-react": "^1.28.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2"
+    "framer-motion": "13.0.0",
+    "lucide-react": "1.28.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-router-dom": "7.18.2"
   },
   "devDependencies": {
-    "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
-    "@vitejs/plugin-react": "^6.0.5",
-    "typescript": "^7.0.2",
-    "vite": "^8.2.0"
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "@vitejs/plugin-react": "6.0.5",
+    "typescript": "7.0.2",
+    "vite": "8.2.0"
   }
 }
