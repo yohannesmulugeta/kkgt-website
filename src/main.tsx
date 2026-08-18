@@ -7,9 +7,17 @@ import './overrides.css';
 
 function ScrollManager() {
   const { pathname } = useLocation();
+
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      const main = document.getElementById('main-content');
+      main?.focus({ preventScroll: true });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
+
   return null;
 }
 
