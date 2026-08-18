@@ -1,0 +1,16 @@
+.solution-list > a {
+  display: grid;
+  grid-template-columns: 46px 1fr 120px auto;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.solution-list > a span { font-size: 10px; color: var(--orange); }
+.solution-list > a strong { font-size: 20px; }
+.solution-list > a p { font-size: 12px !important; }
+.solution-list > a:hover strong { color: var(--green); }
+
+@media (max-width: 760px) {
+  .solution-list > a { grid-template-columns: 40px 1fr auto; }
+  .solution-list > a p { display: none; }
+}
