@@ -1,0 +1,60 @@
+/* Targeted fixes for GitHub Pages rendering issues. */
+
+/* Do not allow normal interface copy to collapse to one character per line. */
+:where(h1, h2, h3, p, a, strong, span, label, button) {
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* Keep long contact/form values safe without affecting navigation or headings. */
+.contact-detail-list strong,
+.footer-grid a,
+.inquiry-form small,
+.field-error,
+.form-status {
+  overflow-wrap: anywhere;
+}
+
+/* Keep hero and navigation text on stable readable measures. */
+.home-hero__content > div,
+.page-hero__content > div {
+  width: min(100%, 980px);
+  min-width: 0;
+}
+
+.eyebrow,
+.nav-link,
+.nav-cta,
+.button,
+.text-action,
+.inline-arrow,
+.mobile-menu__inner a,
+.home-hero__rail span {
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+@media (min-width: 769px) {
+  .nav-link,
+  .nav-cta,
+  .button,
+  .text-action,
+  .eyebrow,
+  .home-hero__rail span {
+    white-space: nowrap;
+  }
+}
+
+/* Make sure the brand image has a predictable box when loaded from GitHub Pages. */
+.logo-lockup {
+  overflow: hidden;
+}
+
+.logo-lockup img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 58px;
+  object-fit: contain;
+}
