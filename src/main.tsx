@@ -5,6 +5,7 @@ import App from './App';
 import './styles.css';
 import './overrides.css';
 import './site.css';
+import './journey.css';
 
 function ScrollManager() {
   const { pathname } = useLocation();
