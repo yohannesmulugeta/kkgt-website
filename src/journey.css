@@ -31,23 +31,25 @@
   color: rgba(255,255,255,.8) !important;
 }
 
-/* ---------- The single special scroll section ---------- */
+/* ---------- One cinematic scroll section ---------- */
 .home-scroll {
   position: relative;
-  min-height: 380vh;
   background: var(--green-deep);
   color: #fff;
+  isolation: isolate;
 }
 
-.home-scroll__sticky {
+.home-scroll__chapter {
   position: sticky;
   top: 0;
-  height: 100vh;
-  height: 100svh;
-  min-height: 650px;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
   overflow: hidden;
   isolation: isolate;
   background: var(--green-deep);
+  box-shadow: 0 -1px 0 rgba(255,255,255,.04);
 }
 
 .home-scroll__media,
@@ -59,6 +61,7 @@
 }
 
 .home-scroll__media {
+  z-index: 0;
   overflow: hidden;
 }
 
@@ -66,15 +69,14 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0;
-  will-change: opacity, transform;
+  will-change: transform;
 }
 
 .home-scroll__veil {
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.88) 37%, rgba(2,29,18,.48) 68%, rgba(2,29,18,.25) 100%),
-    linear-gradient(0deg, rgba(2,29,18,.78) 0%, transparent 48%);
+    linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.88) 38%, rgba(2,29,18,.48) 68%, rgba(2,29,18,.24) 100%),
+    linear-gradient(0deg, rgba(2,29,18,.62) 0%, transparent 52%);
 }
 
 .home-scroll__grain {
@@ -89,23 +91,25 @@
 .home-scroll__layout {
   position: relative;
   z-index: 3;
-  height: 100%;
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0,1fr) 300px;
   gap: clamp(50px,7vw,100px);
   align-items: center;
-  padding-top: 116px;
-  padding-bottom: 94px;
+  padding-top: clamp(118px, 14vh, 160px);
+  padding-bottom: clamp(100px, 12vh, 140px);
 }
 
-.home-scroll__intro {
+.home-scroll__copy {
   min-width: 0;
+  max-width: 790px;
 }
 
 .home-scroll__kicker {
   display: inline-flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 28px;
   color: rgba(255,255,255,.66);
   font-size: 10px;
   font-weight: 900;
@@ -117,21 +121,6 @@
   width: 40px;
   height: 1px;
   background: var(--orange);
-}
-
-.home-scroll__copy-stack {
-  display: grid;
-  max-width: 790px;
-  margin-top: 28px;
-}
-
-.home-scroll__copy {
-  grid-area: 1 / 1;
-  pointer-events: none;
-}
-
-.home-scroll__copy.is-active {
-  pointer-events: auto;
 }
 
 .home-scroll__number {
@@ -179,7 +168,6 @@
   padding: 0 18px 0 24px;
   border-bottom: 1px solid rgba(255,255,255,.12);
   color: rgba(255,255,255,.42);
-  transition: color .3s ease, background .3s ease;
 }
 
 .home-scroll__rail > div:first-child {
@@ -222,11 +210,11 @@
   position: absolute;
   z-index: 4;
   left: max(24px, calc((100vw - min(calc(100% - 48px), var(--container))) / 2));
-  bottom: 26px;
+  bottom: 28px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: rgba(255,255,255,.48);
+  color: rgba(255,255,255,.52);
   font-size: 9px;
   font-weight: 900;
   letter-spacing: .13em;
@@ -240,18 +228,22 @@
   right: 0;
   bottom: 0;
   height: 4px;
-  background: var(--orange);
-  transform-origin: left center;
+  background: rgba(255,255,255,.12);
 }
 
-/* Reduced-motion fallback: normal cards, no pinned scroll. */
+.home-scroll__progress span {
+  display: block;
+  height: 100%;
+  background: var(--orange);
+}
+
+/* Reduced-motion fallback: normal cards, no sticky effect. */
 .home-scroll--static {
   min-height: 0;
   padding: 120px 0;
 }
 
-.home-scroll--static .section-heading h2,
-.home-scroll--static .section-heading h2 em {
+.home-scroll--static .section-heading h2 {
   color: #fff;
 }
 
@@ -273,11 +265,11 @@
 @media (max-height: 780px) and (min-width: 901px) {
   .home-scroll__layout {
     padding-top: 94px;
-    padding-bottom: 72px;
+    padding-bottom: 82px;
   }
 
-  .home-scroll__copy-stack {
-    margin-top: 18px;
+  .home-scroll__kicker {
+    margin-bottom: 18px;
   }
 
   .home-scroll__copy h2 {
@@ -300,22 +292,20 @@
 }
 
 @media (max-width: 900px) {
-  .home-scroll {
-    min-height: 340vh;
-  }
-
-  .home-scroll__sticky {
-    min-height: 620px;
+  .home-scroll__chapter {
+    position: relative;
+    top: auto;
+    min-height: max(720px, 92svh);
   }
 
   .home-scroll__layout {
     grid-template-columns: 1fr;
     align-content: center;
-    padding-top: 104px;
-    padding-bottom: 130px;
+    padding-top: 108px;
+    padding-bottom: 142px;
   }
 
-  .home-scroll__intro {
+  .home-scroll__copy {
     max-width: 720px;
   }
 
@@ -327,7 +317,7 @@
     position: absolute;
     left: 24px;
     right: 24px;
-    bottom: 48px;
+    bottom: 52px;
     display: grid;
     grid-template-columns: repeat(4,1fr);
     border-left: 0;
@@ -377,21 +367,18 @@
     background-position: 57% center;
   }
 
-  .home-scroll {
-    min-height: 320vh;
-  }
-
-  .home-scroll__sticky {
-    min-height: 650px;
+  .home-scroll__chapter {
+    min-height: max(700px, 94svh);
   }
 
   .home-scroll__layout {
     width: min(calc(100% - 28px), var(--container));
-    padding-top: 98px;
-    padding-bottom: 132px;
+    padding-top: 100px;
+    padding-bottom: 136px;
   }
 
   .home-scroll__kicker {
+    margin-bottom: 18px;
     font-size: 8px;
   }
 
@@ -420,10 +407,7 @@
     border-top: 1px solid rgba(255,255,255,.08);
   }
 
-  .home-scroll__rail strong {
-    font-size: 8px;
-  }
-
+  .home-scroll__rail strong,
   .home-scroll__rail span {
     font-size: 8px;
   }
@@ -434,8 +418,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-scroll__scene,
-  .home-scroll__rail > div {
-    transition: none !important;
+  .home-scroll__scene {
+    transform: none !important;
   }
 }
