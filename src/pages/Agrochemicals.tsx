@@ -28,9 +28,9 @@ export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: '
         <div className="container">
           <Reveal><SectionHeading eyebrow="PRODUCT DISCOVERY" title="Search the catalogue." accent="Filter by verified category." copy="Names below were recovered from KKGT’s existing public catalogue. Six products were also publicly grouped under fungicides; other categories remain unassigned until labels are confirmed." /></Reveal>
           <Reveal className="catalog-tools">
-            <label className="catalog-search"><Search size={18} /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search product name" aria-label="Search agrochemical products" /></label>
+            <label className="catalog-search"><Search size={18} aria-hidden="true" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search product name" aria-label="Search agrochemical products" /></label>
             <div className="filter-tabs" role="group" aria-label="Product category filters">
-              {filters.map((item) => <button key={item} className={filter === item ? 'active' : ''} onClick={() => setFilter(item)}>{item}</button>)}
+              {filters.map((item) => <button type="button" key={item} aria-pressed={filter === item} className={filter === item ? 'active' : ''} onClick={() => setFilter(item)}>{item}</button>)}
             </div>
           </Reveal>
           <div className="product-grid">
@@ -44,9 +44,9 @@ export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: '
         <div className="container solution-grid">
           <Reveal><span className="eyebrow">FIND BY FARMING NEED</span><h2>A catalogue designed around <em>the problem being solved.</em></h2><p>Once label data is confirmed, products can also be filtered by crop, weed, disease, insect, active ingredient and formulation.</p></Reveal>
           <Reveal className="solution-list" delay={.08}>
-            <Link to="/agrochemicals/herbicides"><span>01</span><strong>Weed control</strong><p>Herbicides</p><ArrowUpRight size={18} /></Link>
-            <Link to="/agrochemicals/fungicides"><span>02</span><strong>Disease control</strong><p>Fungicides</p><ArrowUpRight size={18} /></Link>
-            <Link to="/agrochemicals/insecticides"><span>03</span><strong>Insect control</strong><p>Insecticides</p><ArrowUpRight size={18} /></Link>
+            <Link to="/agrochemicals/herbicides"><span>01</span><strong>Weed control</strong><p>Herbicides</p><ArrowUpRight size={18} aria-hidden="true" /></Link>
+            <Link to="/agrochemicals/fungicides"><span>02</span><strong>Disease control</strong><p>Fungicides</p><ArrowUpRight size={18} aria-hidden="true" /></Link>
+            <Link to="/agrochemicals/insecticides"><span>03</span><strong>Insect control</strong><p>Insecticides</p><ArrowUpRight size={18} aria-hidden="true" /></Link>
           </Reveal>
         </div>
       </section>
@@ -69,11 +69,11 @@ export function ProductDetail() {
         <div className="container product-hero__grid">
           <Reveal className="product-hero__visual"><div className="product-monogram">{product.name.slice(0, 2).toUpperCase()}</div><span>KKGT PRODUCT CATALOGUE</span></Reveal>
           <Reveal className="product-hero__copy" delay={.08}>
-            <Link to="/agrochemicals" className="back-link back-link--light"><ArrowLeft size={16} /> All agrochemicals</Link>
+            <Link to="/agrochemicals" className="back-link back-link--light"><ArrowLeft size={16} aria-hidden="true" /> All agrochemicals</Link>
             <span className={`category-chip ${verified ? 'verified' : 'pending'}`}>{product.category}</span>
             <h1>{product.name}</h1>
             <p>{verified ? 'The product name and fungicide category are represented on KKGT’s existing public site. Technical details still require current label confirmation.' : 'The product name is represented in KKGT’s existing public catalogue. Category and technical details require current label confirmation.'}</p>
-            <Link to={`/contact?interest=agrochemical&product=${encodeURIComponent(product.name)}`} className="button button--orange">Ask about this product <ArrowUpRight size={17} /></Link>
+            <Link to={`/contact?interest=agrochemical&product=${encodeURIComponent(product.name)}`} className="button button--orange">Ask about this product <ArrowUpRight size={17} aria-hidden="true" /></Link>
           </Reveal>
         </div>
       </section>
@@ -86,7 +86,7 @@ export function ProductDetail() {
             <div className="spec-placeholder-grid">
               {['Active ingredient', 'Formulation', 'Registered crop', 'Target pest / weed / disease', 'Application rate', 'Registration details', 'PPE / safety', 'PHI / REI'].map((label) => <div key={label}><span>{label}</span><strong>Awaiting approved label</strong></div>)}
             </div>
-            <div className="safety-note"><ShieldAlert size={22} /><div><strong>Product safety rule</strong><p>Do not use this page as an application instruction. Rates, crops, targets and safety requirements must come from the current approved product label and applicable Ethiopian requirements.</p></div></div>
+            <div className="safety-note"><ShieldAlert size={22} aria-hidden="true" /><div><strong>Product safety rule</strong><p>Do not use this page as an application instruction. Rates, crops, targets and safety requirements must come from the current approved product label and applicable Ethiopian requirements.</p></div></div>
           </Reveal>
         </div>
       </section>
