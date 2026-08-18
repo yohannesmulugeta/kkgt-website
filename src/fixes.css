@@ -58,3 +58,48 @@
   max-height: 58px;
   object-fit: contain;
 }
+
+/* Keep business-card content contained inside each grid cell. */
+.business-card-grid > * {
+  min-width: 0;
+  height: 100%;
+}
+
+.business-card-grid .image-link-card {
+  display: block;
+  width: 100%;
+  min-height: 430px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.image-link-card__media,
+.image-link-card__shade {
+  position: absolute;
+  inset: 0;
+}
+
+.image-link-card__media {
+  z-index: 0;
+}
+
+.image-link-card__shade {
+  z-index: 1;
+}
+
+.image-link-card__index,
+.image-link-card__content {
+  z-index: 2;
+}
+
+.image-link-card__content {
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .business-card-grid .image-link-card {
+    min-height: 390px;
+  }
+}
