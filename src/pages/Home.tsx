@@ -1,159 +1,260 @@
-import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { InquiryBand, Reveal, SectionHeading, Seo } from '../components/UI';
-import { businessAreas, company, processSteps } from '../data/company';
-import { coffeeOrigins } from '../data/catalog';
+import { InquiryBand, Reveal, Seo } from '../components/UI';
+import { businessAreas, company } from '../data/company';
+import { coffeeOrigins, commodities } from '../data/catalog';
+import '../journey.css';
 
 const RAW_COFFEE_IMAGE = 'https://images.pexels.com/photos/7125601/pexels-photo-7125601.jpeg?auto=compress&cs=tinysrgb&w=2200';
+const QUALITY_IMAGE = 'https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=1800&q=86';
 
-const homeBusinessAreas = businessAreas.map((area, index) => ({
-  ...area,
-  image: index === 0 ? RAW_COFFEE_IMAGE : area.image,
-  heroTitle: index === 0 ? 'Ethiopian Green Coffee' : area.title,
-  heroEyebrow: index === 0 ? 'RAW COFFEE · EXPORT' : area.eyebrow,
-}));
+const businessStories = [
+  {
+    index: '01',
+    eyebrow: 'RAW COFFEE · EXPORT',
+    title: 'Ethiopian Green Coffee',
+    intro: 'The journey begins at origin and moves toward a buyer conversation built on current, confirmed commercial information.',
+    to: '/coffee',
+    bridge: 'The same sourcing discipline continues beyond coffee.',
+    stages: [
+      {
+        number: '01.1',
+        eyebrow: 'ORIGIN',
+        title: 'It starts at origin.',
+        copy: 'KKGT’s coffee story begins with Ethiopian producing origins, supplier relationships and a clear understanding of what the buyer is looking for.',
+        image: RAW_COFFEE_IMAGE,
+        position: 'center',
+        label: 'Ethiopia · Green coffee',
+      },
+      {
+        number: '01.2',
+        eyebrow: 'PREPARE & VERIFY',
+        title: 'Prepared around the requirement.',
+        copy: 'Processing, handling and commercial details are coordinated around the actual requirement rather than a generic specification sheet.',
+        image: coffeeOrigins[3].image,
+        position: 'center',
+        label: 'Preparation · Quality handling',
+      },
+      {
+        number: '01.3',
+        eyebrow: 'MARKET',
+        title: 'Then the conversation moves to market.',
+        copy: 'Origin, grade, processing method, volume and destination become the basis for a current export inquiry and buyer discussion.',
+        image: coffeeOrigins[0].image,
+        position: 'center',
+        label: 'Buyer inquiry · Export',
+      },
+    ],
+  },
+  {
+    index: '02',
+    eyebrow: 'AGRICULTURAL COMMODITIES · EXPORT',
+    title: 'Agricultural Commodities',
+    intro: 'The same source-to-market thinking expands from coffee into sesame, soybeans, pulses and beans.',
+    to: '/commodities',
+    bridge: 'From what Ethiopia produces to what farmers and distributors need.',
+    stages: [
+      {
+        number: '02.1',
+        eyebrow: 'SOURCE',
+        title: 'Start with the product and source.',
+        copy: 'Commodity trading begins with the product, supplier relationships and the commercial requirement that needs to be met.',
+        image: businessAreas[1].image,
+        position: 'center',
+        label: 'Agricultural sourcing',
+      },
+      {
+        number: '02.2',
+        eyebrow: 'AGGREGATE & HANDLE',
+        title: 'Bring supply into a clear commercial lot.',
+        copy: 'Product identity, quality expectations, crop year, volume and packing are brought together into information a buyer can actually evaluate.',
+        image: commodities[0].image,
+        position: 'center',
+        label: 'Sesame · Commodity handling',
+      },
+      {
+        number: '02.3',
+        eyebrow: 'BUYER REQUIREMENT',
+        title: 'Match the lot to the market need.',
+        copy: 'The useful next step is a buyer-specific discussion around target specification, quantity, packing, destination and timing.',
+        image: commodities[1].image,
+        position: 'center',
+        label: 'Commodity · Market requirement',
+      },
+    ],
+  },
+  {
+    index: '03',
+    eyebrow: 'IMPORT & DISTRIBUTION',
+    title: 'Agrochemicals',
+    intro: 'The story shifts from exporting agricultural value to supplying crop-protection products into the Ethiopian market.',
+    to: '/agrochemicals',
+    bridge: 'Distribution naturally connects to a broader import and trading capability.',
+    stages: [
+      {
+        number: '03.1',
+        eyebrow: 'FARMING NEED',
+        title: 'Begin with the farming problem.',
+        copy: 'The useful starting point is the crop, the problem being addressed and the exact product or category the customer is trying to identify.',
+        image: businessAreas[2].image,
+        position: 'center',
+        label: 'Crop protection · Farming need',
+      },
+      {
+        number: '03.2',
+        eyebrow: 'VERIFY',
+        title: 'Product information must be verified.',
+        copy: 'Technical claims, application rates, targets and safety information should come from current approved labels and qualified guidance—not assumptions.',
+        image: QUALITY_IMAGE,
+        position: 'center',
+        label: 'Verification · Product information',
+      },
+      {
+        number: '03.3',
+        eyebrow: 'DISTRIBUTE',
+        title: 'Then move the right information with the product.',
+        copy: 'A strong distribution experience connects product discovery, verified information, commercial availability and the customer’s local requirement.',
+        image: businessAreas[3].image,
+        position: 'center',
+        label: 'Distribution · Local market',
+      },
+    ],
+  },
+  {
+    index: '04',
+    eyebrow: 'IMPORT · TRADING',
+    title: 'Import & Trading',
+    intro: 'The final part of the journey widens into selected agricultural inputs, stationery, construction materials and practical local trading requirements.',
+    to: '/trading',
+    bridge: '',
+    stages: [
+      {
+        number: '04.1',
+        eyebrow: 'REQUIREMENT',
+        title: 'Trading starts with a real requirement.',
+        copy: 'Product, quantity, target specification, delivery location and timing define the opportunity before sourcing begins.',
+        image: businessAreas[3].image,
+        position: 'left center',
+        label: 'Requirement · Commercial need',
+      },
+      {
+        number: '04.2',
+        eyebrow: 'COORDINATE',
+        title: 'Connect sourcing with commercial coordination.',
+        copy: 'The trading role is to connect the requirement with sourcing, commercial communication, documentation and practical execution.',
+        image: businessAreas[3].image,
+        position: 'center',
+        label: 'Sourcing · Coordination',
+      },
+      {
+        number: '04.3',
+        eyebrow: 'DELIVER',
+        title: 'Complete the journey with delivery.',
+        copy: 'The same connected operating mindset carries through to logistics and delivery for the customer in the Ethiopian market.',
+        image: businessAreas[3].image,
+        position: 'right center',
+        label: 'Logistics · Delivery',
+      },
+    ],
+  },
+] as const;
 
-function BusinessStory() {
+function ConnectedBusinessJourney() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="business-story" aria-label="KKGT businesses from Ethiopia to market">
-      {homeBusinessAreas.map((area, index) => (
-        <article
-          key={area.to}
-          className={`business-story__chapter business-story__chapter--${index + 1}`}
-          style={{ backgroundImage: `url(${area.image})` }}
-        >
-          <div className="business-story__veil" aria-hidden="true" />
-          <div className="business-story__texture" aria-hidden="true" />
-
-          <div className="container business-story__layout">
-            <motion.div
-              className="business-story__copy"
-              initial={reduceMotion ? false : { opacity: 0, y: 34 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.48 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: .64, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {index === 0 ? (
-                <>
-                  <span className="eyebrow eyebrow--light">ETHIOPIA · IMPORT · EXPORT</span>
-                  <h1><span>Rooted in Ethiopia.</span><br /><em>Trading with the world.</em></h1>
-                  <p className="business-story__lead">KKGT connects Ethiopian agricultural value with domestic and international markets through export, agricultural supply and diversified trading.</p>
-                </>
-              ) : (
-                <>
-                  <span className="business-story__chapter-number">0{index + 1} / 04</span>
-                  <span className="eyebrow eyebrow--light">{area.heroEyebrow}</span>
-                  <h2>{area.heroTitle}</h2>
-                </>
-              )}
-
-              <div className="business-story__card">
-                <div className="business-story__meta">
-                  <span>0{index + 1}</span>
-                  <span>{area.heroEyebrow}</span>
-                </div>
-                {index === 0 && <strong>{area.heroTitle}</strong>}
-                <p>{area.description}</p>
-                <Link to={area.to} className="business-story__link">
-                  Explore {index === 0 ? 'coffee export' : area.title.toLowerCase()} <ArrowUpRight size={16} aria-hidden="true" />
-                </Link>
-              </div>
-
-              {index === 0 && (
-                <div className="hero-actions">
-                  <Link to="/contact" className="button button--orange">Start an inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
-                  <span className="business-story__hint">Scroll to discover our businesses <ArrowDownRight size={17} aria-hidden="true" /></span>
-                </div>
-              )}
-            </motion.div>
-
-            <motion.div
-              className="business-story__visual"
-              initial={reduceMotion ? false : { opacity: 0, scale: .9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: false, amount: 0.45 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: .8, ease: [0.22, 1, 0.36, 1] }}
-              aria-hidden="true"
-            >
-              <div className="business-story__orbit business-story__orbit--outer" />
-              <div className="business-story__orbit business-story__orbit--inner" />
-              <div className="business-story__portal" style={{ backgroundImage: `url(${area.image})` }}>
-                <div className="business-story__portal-shade" />
-                <div className="business-story__portal-copy">
-                  <span>KKGT · 0{index + 1}</span>
-                  <strong>{area.heroTitle}</strong>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <div className="business-story__rail" aria-hidden="true">
-            <div className="container business-story__rail-inner">
-              {homeBusinessAreas.map((railArea, railIndex) => (
-                <div key={railArea.to} className={railIndex === index ? 'is-active' : ''}>
-                  <span>0{railIndex + 1}</span>
-                  <strong>{railArea.heroTitle}</strong>
-                </div>
-              ))}
+    <section className="connected-journey" aria-label="KKGT connected business journey">
+      <div className="connected-journey__opening" style={{ backgroundImage: `url(${RAW_COFFEE_IMAGE})` }}>
+        <div className="connected-journey__opening-veil" aria-hidden="true" />
+        <div className="connected-journey__opening-texture" aria-hidden="true" />
+        <div className="container connected-journey__opening-content">
+          <motion.div
+            initial={reduceMotion ? false : { opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={reduceMotion ? { duration: 0 } : { duration: .7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="eyebrow eyebrow--light">ETHIOPIA · IMPORT · EXPORT</span>
+            <h1><span>Rooted in Ethiopia.</span><br /><em>Trading with the world.</em></h1>
+            <p>Follow one connected KKGT journey from Ethiopian coffee and agricultural commodities to crop-protection distribution and diversified trading.</p>
+            <div className="hero-actions">
+              <Link to="/contact" className="button button--orange">Start an inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
+              <span className="connected-journey__scroll-hint">Scroll through the story <ArrowDownRight size={17} aria-hidden="true" /></span>
             </div>
+          </motion.div>
+
+          <div className="connected-journey__index" aria-hidden="true">
+            {businessStories.map((story) => (
+              <div key={story.index}><span>{story.index}</span><strong>{story.title}</strong></div>
+            ))}
           </div>
-        </article>
-      ))}
-    </section>
-  );
-}
-
-const processVisuals = [
-  RAW_COFFEE_IMAGE,
-  businessAreas[1].image,
-  businessAreas[2].image,
-  businessAreas[3].image,
-  RAW_COFFEE_IMAGE,
-];
-
-function SourceToMarketStory() {
-  const [activeStep, setActiveStep] = useState(0);
-  const [number, title, copy] = processSteps[activeStep];
-
-  return (
-    <div className="market-story">
-      <div className="market-story__visual" aria-hidden="true">
-        {processVisuals.map((image, index) => (
-          <div
-            key={`${image}-${index}`}
-            className={`market-story__image${index === activeStep ? ' is-active' : ''}`}
-            style={{ backgroundImage: `url(${image})` }}
-          />
-        ))}
-        <div className="market-story__shade" />
-        <div className="market-story__visual-copy">
-          <span>{number} · KKGT WORKFLOW</span>
-          <strong>{title}</strong>
-          <p>{copy}</p>
         </div>
       </div>
 
-      <div className="market-story__steps" aria-label="KKGT source to market process">
-        {processSteps.map(([no, stepTitle, stepCopy], index) => (
-          <button
-            key={no}
-            type="button"
-            aria-pressed={index === activeStep}
-            className={index === activeStep ? 'is-active' : ''}
-            onFocus={() => setActiveStep(index)}
-            onClick={() => setActiveStep(index)}
-          >
-            <span>{no}</span>
-            <div><strong>{stepTitle}</strong><p>{stepCopy}</p></div>
-            <i aria-hidden="true" />
-          </button>
+      <div className="connected-journey__flow">
+        <div className="connected-journey__spine" aria-hidden="true" />
+        {businessStories.map((story, businessIndex) => (
+          <section className="journey-business" key={story.index} aria-labelledby={`journey-business-${story.index}`}>
+            <div className="container journey-business__header">
+              <div className="journey-business__number">{story.index}</div>
+              <div>
+                <span className="eyebrow eyebrow--light">{story.eyebrow}</span>
+                <h2 id={`journey-business-${story.index}`}>{story.title}</h2>
+                <p>{story.intro}</p>
+                <Link to={story.to} className="journey-business__explore">Explore this business <ArrowUpRight size={16} aria-hidden="true" /></Link>
+              </div>
+            </div>
+
+            <div className="container journey-business__stages">
+              {story.stages.map((stage, stageIndex) => (
+                <article className={`journey-stage${stageIndex % 2 ? ' journey-stage--reverse' : ''}`} key={stage.number}>
+                  <motion.div
+                    className="journey-stage__copy"
+                    initial={reduceMotion ? false : { opacity: 0, y: 28 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: .42 }}
+                    transition={reduceMotion ? { duration: 0 } : { duration: .58, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div className="journey-stage__meta"><span>{stage.number}</span><span>{stage.eyebrow}</span></div>
+                    <h3>{stage.title}</h3>
+                    <p>{stage.copy}</p>
+                  </motion.div>
+
+                  <motion.figure
+                    className="journey-stage__visual"
+                    initial={reduceMotion ? false : { opacity: 0, scale: 1.035, y: 24 }}
+                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                    viewport={{ once: false, amount: .35 }}
+                    transition={reduceMotion ? { duration: 0 } : { duration: .78, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <div
+                      className="journey-stage__image"
+                      style={{ backgroundImage: `url(${stage.image})`, backgroundPosition: stage.position }}
+                    />
+                    <div className="journey-stage__shade" aria-hidden="true" />
+                    <figcaption><span>KKGT · {story.index}</span><strong>{stage.label}</strong></figcaption>
+                  </motion.figure>
+                </article>
+              ))}
+            </div>
+
+            {story.bridge ? (
+              <div className="container journey-bridge" aria-hidden="true">
+                <span>{story.index} → 0{businessIndex + 2}</span>
+                <strong>{story.bridge}</strong>
+                <i />
+              </div>
+            ) : (
+              <div className="container journey-bridge journey-bridge--final" aria-hidden="true">
+                <span>04 · COMPLETE</span>
+                <strong>One company. One connected operating story.</strong>
+                <i />
+              </div>
+            )}
+          </section>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -162,7 +263,7 @@ export function Home() {
     <>
       <Seo title="KKGT Import Export | Ethiopia" description="KKGT connects Ethiopian coffee, agricultural commodities, crop-protection products and diversified trading opportunities with local and international markets." />
 
-      <BusinessStory />
+      <ConnectedBusinessJourney />
 
       <section className="section section--paper">
         <div className="container split-intro">
@@ -194,13 +295,6 @@ export function Home() {
             </div>
             <Link to="/coffee" className="button button--outline">Explore coffee export <ArrowUpRight size={17} aria-hidden="true" /></Link>
           </Reveal>
-        </div>
-      </section>
-
-      <section className="section section--paper market-story-section">
-        <div className="container">
-          <Reveal><SectionHeading eyebrow="HOW KKGT WORKS" title="From source" accent="to market." copy="Select each stage to see how sourcing, preparation, quality, trade and delivery connect." /></Reveal>
-          <Reveal delay={.08}><SourceToMarketStory /></Reveal>
         </div>
       </section>
 
