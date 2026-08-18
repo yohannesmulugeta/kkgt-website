@@ -6,9 +6,9 @@ import { agroProducts, type ProductCategory } from '../data/catalog';
 
 const filters: Array<'All' | ProductCategory> = ['All', 'Fungicide', 'Herbicide', 'Insecticide', 'To confirm'];
 
-export function Agrochemicals() {
+export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: 'All' | ProductCategory }) {
   const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<(typeof filters)[number]>('All');
+  const [filter, setFilter] = useState<(typeof filters)[number]>(initialCategory);
 
   const products = useMemo(() => agroProducts.filter((product) => {
     const matchesText = product.name.toLowerCase().includes(query.toLowerCase());
@@ -16,10 +16,13 @@ export function Agrochemicals() {
     return matchesText && matchesCategory;
   }), [query, filter]);
 
+  const pageTitle = initialCategory === 'All' ? 'Crop protection' : `${initialCategory}s`;
+  const pageAccent = initialCategory === 'All' ? 'without guesswork.' : 'from KKGT.';
+
   return (
     <>
-      <Seo title="Agrochemicals & Crop Protection | KKGT" description="Browse KKGT’s crop-protection catalogue with search and category filters. Technical claims are displayed only when verified from current product labels." />
-      <PageHero eyebrow="AGROCHEMICALS" title="Crop protection" accent="without guesswork." copy="A professional catalogue should help customers find products quickly while keeping regulated product claims tied to verified labels and current company records." image="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=2000&q=88" />
+      <Seo title={`${initialCategory === 'All' ? 'Agrochemicals & Crop Protection' : `${initialCategory}s`} | KKGT`} description="Browse KKGT’s crop-protection catalogue with search and category filters. Technical claims are displayed only when verified from current product labels." />
+      <PageHero eyebrow="AGROCHEMICALS" title={pageTitle} accent={pageAccent} copy="A professional catalogue should help customers find products quickly while keeping regulated product claims tied to verified labels and current company records." image="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=2000&q=88" />
 
       <section className="section section--paper">
         <div className="container">
@@ -33,7 +36,7 @@ export function Agrochemicals() {
           <div className="product-grid">
             {products.map((product, index) => <Reveal key={product.slug} delay={(index % 4) * .03}><ProductCard product={product} /></Reveal>)}
           </div>
-          {products.length === 0 ? <div className="empty-state"><strong>No verified products in this filter yet.</strong><p>KKGT can add products as soon as current labels and category assignments are confirmed.</p></div> : null}
+          {products.length === 0 ? <div className="empty-state"><strong>No safely verified products in this category yet.</strong><p>KKGT can assign products here as soon as current labels and category information are confirmed.</p></div> : null}
         </div>
       </section>
 
@@ -41,7 +44,9 @@ export function Agrochemicals() {
         <div className="container solution-grid">
           <Reveal><span className="eyebrow">FIND BY FARMING NEED</span><h2>A catalogue designed around <em>the problem being solved.</em></h2><p>Once label data is confirmed, products can also be filtered by crop, weed, disease, insect, active ingredient and formulation.</p></Reveal>
           <Reveal className="solution-list" delay={.08}>
-            {[['Weed control', 'Herbicides'], ['Disease control', 'Fungicides'], ['Insect control', 'Insecticides']].map(([title, category], index) => <div key={title}><span>0{index + 1}</span><strong>{title}</strong><p>{category}</p><ArrowUpRight size={18} /></div>)}
+            <Link to="/agrochemicals/herbicides"><span>01</span><strong>Weed control</strong><p>Herbicides</p><ArrowUpRight size={18} /></Link>
+            <Link to="/agrochemicals/fungicides"><span>02</span><strong>Disease control</strong><p>Fungicides</p><ArrowUpRight size={18} /></Link>
+            <Link to="/agrochemicals/insecticides"><span>03</span><strong>Insect control</strong><p>Insecticides</p><ArrowUpRight size={18} /></Link>
           </Reveal>
         </div>
       </section>
