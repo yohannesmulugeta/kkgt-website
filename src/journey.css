@@ -72,10 +72,13 @@
   line-height: 1.7;
 }
 
-/* The track owns all real scroll distance. Nothing else fakes height. */
+/*
+  The track deliberately gives the four scenes generous dwell time.
+  This keeps normal wheel/trackpad momentum from visually skipping 02 or 03.
+*/
 .home-scroll__track {
   position: relative;
-  height: 420vh;
+  height: 680vh;
   overflow: visible !important;
   background: var(--green-deep);
 }
@@ -279,8 +282,15 @@
   right: 0;
   bottom: 0;
   height: 4px;
+  background: rgba(255,255,255,.14);
+  overflow: hidden;
+}
+
+.home-scroll__progress span {
+  display: block;
+  height: 100%;
   background: var(--orange);
-  transform-origin: left center;
+  transition: width .5s cubic-bezier(.22,1,.36,1);
 }
 
 /* ---------- Reduced motion ---------- */
@@ -323,7 +333,7 @@
     gap: 18px;
   }
 
-  .home-scroll__track { height: 380vh; }
+  .home-scroll__track { height: 600vh; }
 
   .home-scroll__layout {
     grid-template-columns: 1fr;
@@ -384,7 +394,7 @@
     width: min(calc(100% - 28px), var(--container));
   }
 
-  .home-scroll__track { height: 350vh; }
+  .home-scroll__track { height: 540vh; }
 
   .home-scroll__layout {
     width: min(calc(100% - 28px), var(--container));
@@ -420,7 +430,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-scroll__scene,
-  .home-scroll__rail > div {
+  .home-scroll__rail > div,
+  .home-scroll__progress span {
     transition: none !important;
   }
 }
