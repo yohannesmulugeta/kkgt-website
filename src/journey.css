@@ -1,4 +1,4 @@
-/* KKGT homepage: normal corporate layout with one cinematic scroll moment only. */
+/* KKGT homepage: normal corporate layout with one controlled scrollytelling moment. */
 
 /* ---------- Normal hero ---------- */
 .home-hero--normal {
@@ -23,25 +23,25 @@
 .home-hero--normal h1 em { color: var(--orange) !important; }
 .home-hero--normal .eyebrow--light { color: rgba(255,255,255,.8) !important; }
 
-/* ---------- One safe cinematic scroll section ---------- */
+/* ---------- One cinematic scrollytelling section ---------- */
 .home-scroll {
   position: relative;
+  overflow: visible !important;
   background: var(--green-deep);
   color: #fff;
-  overflow: clip;
 }
 
 .home-scroll__section-intro {
   position: relative;
-  z-index: 2;
-  padding: 72px 0 44px;
-  background: var(--green-deep);
+  z-index: 3;
+  padding: 72px 0 46px;
   border-bottom: 1px solid rgba(255,255,255,.1);
+  background: var(--green-deep);
 }
 
 .home-scroll__section-intro-inner {
   display: grid;
-  grid-template-columns: minmax(0,1fr) minmax(280px,.7fr);
+  grid-template-columns: minmax(0,1fr) minmax(300px,.7fr);
   gap: 56px;
   align-items: end;
 }
@@ -72,17 +72,23 @@
   line-height: 1.7;
 }
 
-/* Every panel is ordinary document flow. No sticky or artificial scroll height. */
-.home-scroll__panel {
+.home-scroll__scrolly {
   position: relative;
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  isolation: isolate;
-  overflow: hidden;
+  overflow: visible !important;
   background: var(--green-deep);
-  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.home-scroll__sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--green-deep);
 }
 
 .home-scroll__media,
@@ -96,24 +102,27 @@
 .home-scroll__media {
   z-index: 0;
   overflow: hidden;
+  background: var(--green-deep);
 }
 
 .home-scroll__scene {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  will-change: transform, opacity;
+  opacity: 0;
+  will-change: opacity, transform;
 }
 
 .home-scroll__veil {
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.89) 39%, rgba(2,29,18,.54) 68%, rgba(2,29,18,.3) 100%),
-    linear-gradient(0deg, rgba(2,29,18,.7) 0%, transparent 56%);
+    linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.88) 38%, rgba(2,29,18,.48) 68%, rgba(2,29,18,.2) 100%),
+    linear-gradient(0deg, rgba(2,29,18,.7) 0%, transparent 54%);
 }
 
 .home-scroll__grain {
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
   opacity: .07;
   background-image: radial-gradient(rgba(255,255,255,.45) .5px, transparent .7px);
@@ -123,19 +132,32 @@
 
 .home-scroll__layout {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: minmax(0,1fr) 310px;
   gap: clamp(54px,7vw,110px);
   align-items: center;
-  padding-top: clamp(132px,15vh,170px);
+  padding-top: clamp(122px,14vh,160px);
   padding-bottom: clamp(92px,10vh,120px);
 }
 
-.home-scroll__copy {
+.home-scroll__copy-stack {
+  position: relative;
   min-width: 0;
-  max-width: 790px;
+  min-height: 420px;
+}
+
+.home-scroll__copy {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: min(100%,790px);
+  pointer-events: none;
+}
+
+.home-scroll__copy.is-active {
+  pointer-events: auto;
 }
 
 .home-scroll__kicker {
@@ -188,7 +210,7 @@
   align-self: center;
   border-left: 1px solid rgba(255,255,255,.18);
   background: rgba(4,35,22,.14);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(5px);
 }
 
 .home-scroll__rail > div {
@@ -201,6 +223,7 @@
   padding: 0 18px 0 24px;
   border-bottom: 1px solid rgba(255,255,255,.12);
   color: rgba(255,255,255,.42);
+  transition: color .28s ease, background .28s ease;
 }
 
 .home-scroll__rail > div:first-child { border-top: 1px solid rgba(255,255,255,.12); }
@@ -217,8 +240,9 @@
 
 .home-scroll__rail > div.is-active {
   color: #fff;
-  background: rgba(255,255,255,.045);
+  background: rgba(255,255,255,.05);
 }
+
 .home-scroll__rail > div.is-active::before { background: var(--orange); }
 
 .home-scroll__rail span {
@@ -236,7 +260,7 @@
 
 .home-scroll__hint {
   position: absolute;
-  z-index: 4;
+  z-index: 6;
   left: max(24px, calc((100vw - min(calc(100% - 48px), var(--container))) / 2));
   bottom: 26px;
   display: inline-flex;
@@ -251,7 +275,7 @@
 
 .home-scroll__progress {
   position: absolute;
-  z-index: 5;
+  z-index: 7;
   left: 0;
   right: 0;
   bottom: 0;
@@ -263,17 +287,53 @@
   display: block;
   height: 100%;
   background: var(--orange);
+  transition: width .4s cubic-bezier(.22,1,.36,1);
+}
+
+.home-scroll__steps {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-scroll__step {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100svh;
+}
+
+/* ---------- Reduced motion ---------- */
+.home-scroll--static {
+  min-height: 0;
+  padding: 120px 0;
+  overflow: hidden !important;
+}
+
+.home-scroll--static .section-heading h2 { color: #fff; }
+.home-scroll--static .section-heading h2 em { color: var(--orange); }
+.home-scroll--static .section-heading p { color: rgba(255,255,255,.65); }
+
+.home-scroll__static-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
 }
 
 /* ---------- Responsive ---------- */
 @media (max-height: 780px) and (min-width: 901px) {
+  .home-scroll__sticky { min-height: 560px; }
   .home-scroll__layout {
-    padding-top: 104px;
-    padding-bottom: 78px;
+    padding-top: 100px;
+    padding-bottom: 72px;
   }
+  .home-scroll__copy-stack { min-height: 350px; }
+  .home-scroll__kicker { margin-bottom: 16px; }
   .home-scroll__copy h2 {
     font-size: clamp(48px,6vw,76px);
-    margin: 13px 0 14px;
+    margin: 12px 0 14px;
   }
   .home-scroll__copy p { font-size: 14px; line-height: 1.6; }
   .home-scroll__action { margin-top: 18px; }
@@ -286,18 +346,22 @@
     gap: 18px;
   }
 
-  .home-scroll__panel {
-    min-height: max(760px, 100svh);
+  .home-scroll__sticky {
+    min-height: max(720px,100svh);
   }
 
   .home-scroll__layout {
     grid-template-columns: 1fr;
     align-content: center;
-    padding-top: 118px;
-    padding-bottom: 150px;
+    padding-top: 112px;
+    padding-bottom: 148px;
   }
 
-  .home-scroll__copy { max-width: 720px; }
+  .home-scroll__copy-stack {
+    max-width: 720px;
+    min-height: 420px;
+  }
+
   .home-scroll__copy h2 { font-size: clamp(48px,10vw,76px); }
 
   .home-scroll__rail {
@@ -318,7 +382,9 @@
     border-bottom: 0;
     border-right: 1px solid rgba(255,255,255,.1);
   }
+
   .home-scroll__rail > div:first-child { border-top: 0; }
+
   .home-scroll__rail > div::before {
     left: 0;
     right: 100%;
@@ -327,6 +393,7 @@
     width: auto;
     height: 2px;
   }
+
   .home-scroll__rail > div.is-active::before { right: 0; }
   .home-scroll__rail strong { font-size: 9px; }
   .home-scroll__hint { display: none; }
@@ -344,17 +411,18 @@
     width: min(calc(100% - 28px), var(--container));
   }
 
-  .home-scroll__panel {
-    min-height: max(720px, 100svh);
+  .home-scroll__sticky {
+    min-height: max(700px,100svh);
   }
 
   .home-scroll__layout {
     width: min(calc(100% - 28px), var(--container));
-    padding-top: 104px;
+    padding-top: 98px;
     padding-bottom: 136px;
   }
 
-  .home-scroll__kicker { margin-bottom: 18px; font-size: 8px; }
+  .home-scroll__copy-stack { min-height: 390px; }
+  .home-scroll__kicker { margin-bottom: 16px; font-size: 8px; }
   .home-scroll__copy h2 {
     font-size: clamp(42px,12vw,60px);
     margin: 14px 0 15px;
@@ -367,17 +435,22 @@
     right: 14px;
     grid-template-columns: repeat(2,1fr);
   }
+
   .home-scroll__rail > div {
     min-height: 42px;
     border-top: 1px solid rgba(255,255,255,.08);
   }
+
   .home-scroll__rail strong,
   .home-scroll__rail span { font-size: 8px; }
+
+  .home-scroll__static-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-scroll__scene {
-    transform: none !important;
-    opacity: 1 !important;
+  .home-scroll__scene,
+  .home-scroll__rail > div,
+  .home-scroll__progress span {
+    transition: none !important;
   }
 }
