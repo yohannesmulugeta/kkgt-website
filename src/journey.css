@@ -72,8 +72,10 @@
   line-height: 1.7;
 }
 
-.home-scroll__scrolly {
+/* The track owns all real scroll distance. Nothing else fakes height. */
+.home-scroll__track {
   position: relative;
+  height: 420vh;
   overflow: visible !important;
   background: var(--green-deep);
 }
@@ -81,11 +83,10 @@
 .home-scroll__sticky {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   height: 100vh;
-  height: 100svh;
-  min-height: 640px;
+  height: 100dvh;
   overflow: hidden;
   isolation: isolate;
   background: var(--green-deep);
@@ -118,7 +119,7 @@
   pointer-events: none;
   background:
     linear-gradient(90deg, rgba(2,29,18,.97) 0%, rgba(2,29,18,.88) 38%, rgba(2,29,18,.48) 68%, rgba(2,29,18,.2) 100%),
-    linear-gradient(0deg, rgba(2,29,18,.7) 0%, transparent 54%);
+    linear-gradient(0deg, rgba(2,29,18,.68) 0%, transparent 54%);
 }
 
 .home-scroll__grain {
@@ -139,14 +140,14 @@
   grid-template-columns: minmax(0,1fr) 310px;
   gap: clamp(54px,7vw,110px);
   align-items: center;
-  padding-top: clamp(122px,14vh,160px);
-  padding-bottom: clamp(92px,10vh,120px);
+  padding-top: clamp(118px,13vh,150px);
+  padding-bottom: clamp(84px,9vh,110px);
 }
 
 .home-scroll__copy-stack {
   position: relative;
   min-width: 0;
-  min-height: 420px;
+  min-height: 410px;
 }
 
 .home-scroll__copy {
@@ -156,9 +157,7 @@
   pointer-events: none;
 }
 
-.home-scroll__copy.is-active {
-  pointer-events: auto;
-}
+.home-scroll__copy.is-active { pointer-events: auto; }
 
 .home-scroll__kicker {
   display: inline-flex;
@@ -280,29 +279,8 @@
   right: 0;
   bottom: 0;
   height: 4px;
-  background: rgba(255,255,255,.12);
-}
-
-.home-scroll__progress span {
-  display: block;
-  height: 100%;
   background: var(--orange);
-  transition: width .4s cubic-bezier(.22,1,.36,1);
-}
-
-.home-scroll__steps {
-  position: absolute;
-  z-index: 8;
-  inset: 0;
-  pointer-events: none;
-}
-
-.home-scroll__step {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 100vh;
-  height: 100svh;
+  transform-origin: left center;
 }
 
 /* ---------- Reduced motion ---------- */
@@ -324,20 +302,19 @@
 
 /* ---------- Responsive ---------- */
 @media (max-height: 780px) and (min-width: 901px) {
-  .home-scroll__sticky { min-height: 560px; }
   .home-scroll__layout {
-    padding-top: 100px;
-    padding-bottom: 72px;
+    padding-top: 92px;
+    padding-bottom: 62px;
   }
-  .home-scroll__copy-stack { min-height: 350px; }
-  .home-scroll__kicker { margin-bottom: 16px; }
+  .home-scroll__copy-stack { min-height: 330px; }
+  .home-scroll__kicker { margin-bottom: 14px; }
   .home-scroll__copy h2 {
-    font-size: clamp(48px,6vw,76px);
-    margin: 12px 0 14px;
+    font-size: clamp(46px,5.7vw,72px);
+    margin: 11px 0 13px;
   }
-  .home-scroll__copy p { font-size: 14px; line-height: 1.6; }
-  .home-scroll__action { margin-top: 18px; }
-  .home-scroll__rail > div { min-height: 58px; }
+  .home-scroll__copy p { font-size: 14px; line-height: 1.56; }
+  .home-scroll__action { margin-top: 16px; }
+  .home-scroll__rail > div { min-height: 54px; }
 }
 
 @media (max-width: 900px) {
@@ -346,20 +323,18 @@
     gap: 18px;
   }
 
-  .home-scroll__sticky {
-    min-height: max(720px,100svh);
-  }
+  .home-scroll__track { height: 380vh; }
 
   .home-scroll__layout {
     grid-template-columns: 1fr;
     align-content: center;
-    padding-top: 112px;
-    padding-bottom: 148px;
+    padding-top: 108px;
+    padding-bottom: 142px;
   }
 
   .home-scroll__copy-stack {
     max-width: 720px;
-    min-height: 420px;
+    min-height: 400px;
   }
 
   .home-scroll__copy h2 { font-size: clamp(48px,10vw,76px); }
@@ -403,32 +378,28 @@
   .home-hero--normal { min-height: max(720px,100svh); }
   .home-hero__media--raw-coffee { background-position: 57% center; }
 
-  .home-scroll__section-intro {
-    padding: 58px 0 34px;
-  }
+  .home-scroll__section-intro { padding: 58px 0 34px; }
 
   .home-scroll__section-intro-inner {
     width: min(calc(100% - 28px), var(--container));
   }
 
-  .home-scroll__sticky {
-    min-height: max(700px,100svh);
-  }
+  .home-scroll__track { height: 350vh; }
 
   .home-scroll__layout {
     width: min(calc(100% - 28px), var(--container));
-    padding-top: 98px;
-    padding-bottom: 136px;
+    padding-top: 94px;
+    padding-bottom: 132px;
   }
 
-  .home-scroll__copy-stack { min-height: 390px; }
-  .home-scroll__kicker { margin-bottom: 16px; font-size: 8px; }
+  .home-scroll__copy-stack { min-height: 370px; }
+  .home-scroll__kicker { margin-bottom: 14px; font-size: 8px; }
   .home-scroll__copy h2 {
-    font-size: clamp(42px,12vw,60px);
-    margin: 14px 0 15px;
+    font-size: clamp(40px,11vw,58px);
+    margin: 13px 0 14px;
   }
-  .home-scroll__copy p { font-size: 14px; line-height: 1.58; }
-  .home-scroll__action { margin-top: 20px; }
+  .home-scroll__copy p { font-size: 14px; line-height: 1.55; }
+  .home-scroll__action { margin-top: 18px; }
 
   .home-scroll__rail {
     left: 14px;
@@ -449,8 +420,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-scroll__scene,
-  .home-scroll__rail > div,
-  .home-scroll__progress span {
+  .home-scroll__rail > div {
     transition: none !important;
   }
 }
