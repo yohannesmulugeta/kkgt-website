@@ -26,6 +26,18 @@ Professional multi-page corporate website for KKGT Import Export, rebuilt as a m
 - `/quality` — Quality & operations
 - `/contact` — Structured business inquiry
 
+## Styling architecture
+
+The production app intentionally loads only three CSS layers, in this order:
+
+1. `src/styles.css` — original design system and component foundations
+2. `src/overrides.css` — shared responsive, accessibility and UI refinements
+3. `src/site.css` — current production header/menu, homepage business story, source-to-market interaction and final rendering safeguards
+
+Do **not** re-import the older experimental files (`cinematic.css`, `interaction-fixes.css`, `business-story.css`, or the previous `fixes.css`). They are retained only as historical source because repository deletion is restricted in the current editing environment. Loading them again will recreate cascade conflicts.
+
+The homepage business story uses four independent full-screen chapters rather than scroll hijacking or a large artificial spacer. This keeps Coffee, Agricultural Commodities, Agrochemicals and Import & Trading visually interactive while preserving normal browser scrolling.
+
 ## Development
 
 ```bash
@@ -47,7 +59,13 @@ The repository includes `.github/workflows/pages.yml`. The Vite base path is con
 
 If GitHub Pages was previously set to “Deploy from a branch”, change **Settings → Pages → Source** to **GitHub Actions**.
 
-The workflow builds the React app, copies the supplied KKGT brand asset into the production bundle, and deploys `dist/` to GitHub Pages.
+The deployment workflow now:
+
+- builds the TypeScript/Vite application
+- copies the supplied KKGT brand assets
+- creates `dist/404.html` so direct React routes can recover on GitHub Pages
+- verifies that the production bundle contains HTML, CSS, JavaScript and the KKGT logo before deployment
+- uploads and deploys `dist/`
 
 ## Content integrity
 
