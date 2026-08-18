@@ -1,0 +1,119 @@
+/* Interaction hotfixes: keep the homepage scrollable and hero copy readable. */
+
+html {
+  overflow-y: auto;
+}
+
+body {
+  overflow-y: auto;
+}
+
+#root,
+#main-content {
+  min-height: 100%;
+  overflow: visible;
+}
+
+/* The fixed header overlays the hero, so size the hero to the viewport rather than a hard 940px. */
+.home-hero--interactive {
+  min-height: 100svh;
+  height: auto;
+  max-height: none;
+  color: #fff;
+  overflow: hidden;
+}
+
+.interactive-hero__layout {
+  min-height: 100svh;
+  padding-top: clamp(132px, 15vh, 160px);
+  padding-bottom: clamp(126px, 14vh, 150px);
+}
+
+/* Explicit contrast: the old global heading/body colors were leaking into the dark hero. */
+.home-hero--interactive h1 {
+  color: #fff;
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+
+.home-hero--interactive .eyebrow--light {
+  color: rgba(255, 255, 255, .76);
+}
+
+.interactive-hero__copy > p {
+  color: rgba(255, 255, 255, .78);
+}
+
+.interactive-hero__active {
+  margin-top: 28px;
+  color: #fff;
+  background: linear-gradient(90deg, rgba(3, 31, 19, .82), rgba(3, 31, 19, .42));
+  border-color: var(--orange);
+}
+
+.interactive-hero__active strong {
+  color: #fff;
+}
+
+.interactive-hero__active p {
+  color: rgba(255, 255, 255, .78);
+}
+
+.interactive-hero__portal-label,
+.interactive-hero__portal-label strong {
+  color: #fff;
+}
+
+.interactive-hero__businesses a,
+.interactive-hero__businesses strong {
+  color: inherit;
+}
+
+/* Give the page a normal document scroll context even if a previous menu interaction left overflow state behind. */
+body:not(:has(.mobile-menu)) {
+  overflow-y: auto !important;
+}
+
+@media (max-height: 820px) and (min-width: 901px) {
+  .home-hero--interactive h1 {
+    font-size: clamp(52px, 5.8vw, 82px);
+  }
+
+  .interactive-hero__layout {
+    padding-top: 118px;
+    padding-bottom: 112px;
+  }
+
+  .interactive-hero__active {
+    margin-top: 20px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .hero-actions {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-hero--interactive,
+  .interactive-hero__layout {
+    min-height: 100svh;
+  }
+
+  .interactive-hero__layout {
+    padding-top: 126px;
+    padding-bottom: 150px;
+  }
+}
+
+@media (max-width: 620px) {
+  .interactive-hero__layout {
+    padding-top: 112px;
+    padding-bottom: 176px;
+  }
+
+  .interactive-hero__active {
+    margin-top: 20px;
+  }
+}
