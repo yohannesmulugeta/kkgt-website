@@ -8,6 +8,7 @@ import './site.css';
 import './journey.css';
 import './coffee-story.css';
 import './coffee-landing.css';
+import './product-catalog.css';
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
