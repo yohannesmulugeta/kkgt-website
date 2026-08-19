@@ -4,20 +4,29 @@ The website structure and functionality are implemented. The items below are int
 
 ## 1. Agrochemical catalogue
 
-The current KKGT website indicates a catalogue of 20 products, but only 14 product names could be reliably recovered from public pages and service content.
+The supplied 2026 Product Catalogue contains 34 numbered product entries. The website currently publishes **27 products** because those entries contain both a visible product image and an English product description.
 
-Please provide:
+The following 7 catalogue entries are intentionally excluded because their product-image area is blank in the supplied catalogue:
 
-- The remaining 6 product names
-- Approved product pack photographs
-- Current product labels / leaflets
-- Active ingredient and formulation for each product
-- Approved crop / target pest / weed / disease claims
-- Registration details that KKGT wants displayed publicly
+- CUREPLUS 30% OD
+- GLUSATE 20% SL
+- TABAN 80% WP
+- AZADON 24% EC
+- BASECOR 80% WDG
+- PROLIGHT 45% SC
+- INSIDER 27% FS
+
+The published product pages use the catalogue image, category, active ingredient and English description. Where the catalogue itself marks data as provisional, the website keeps that warning visible.
+
+Please still provide when available:
+
+- Approved high-resolution product pack photographs, especially for any excluded products KKGT wants published
+- Current approved product labels / leaflets
+- Confirmed registration details
 - Application rates only from approved labels
 - PPE, PHI, REI and other safety instructions only from approved labels
 
-The website will not invent or infer any of these regulated product details.
+The website will not invent or infer regulated product details that are not supported by the supplied catalogue or an approved label.
 
 ## 2. Company details to confirm
 
