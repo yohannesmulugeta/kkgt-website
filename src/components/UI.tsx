@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import type { AgroProduct } from '../data/catalog';
+import type { AgroProduct } from '../data/productCatalog';
 
 export function Seo({ title, description }: { title: string; description: string }) {
   return (
@@ -100,19 +100,37 @@ export function InquiryBand({ title = 'Let’s build the right trade conversatio
   );
 }
 
+export function getAgroProductImageStyle(product: AgroProduct) {
+  const base = import.meta.env.BASE_URL;
+  const position = product.imageCount === 1 ? 0 : (product.imageSlot / (product.imageCount - 1)) * 100;
+
+  return {
+    backgroundImage: `url(${base}assets/products/product-sprite-${product.imageSprite}.jpg)`,
+    backgroundSize: `100% ${product.imageCount * 100}%`,
+    backgroundPosition: `center ${position}%`,
+    backgroundRepeat: 'no-repeat',
+  };
+}
+
 export function ProductCard({ product }: { product: AgroProduct }) {
-  const verified = product.verification === 'category-verified';
   return (
-    <Link to={`/agrochemicals/product/${product.slug}`} className="product-card">
+    <Link to={`/agrochemicals/product/${product.slug}`} className="product-card product-card--catalogue">
       <div className="product-card__top">
-        <span className={`category-chip ${verified ? 'verified' : 'pending'}`}>{product.category}</span>
+        <span className="category-chip verified">{product.category}</span>
+        <span className="product-card__catalog-number">#{String(product.catalogNumber).padStart(2, '0')}</span>
         <ArrowUpRight size={17} aria-hidden="true" />
       </div>
-      <div className="product-card__visual" aria-hidden="true"><span>{product.name.slice(0, 2).toUpperCase()}</span></div>
+      <div
+        className="product-card__visual product-card__visual--photo"
+        style={getAgroProductImageStyle(product)}
+        role="img"
+        aria-label={`${product.name} product image from the KKGT 2026 catalogue`}
+      />
       <div className="product-card__body">
         <h3>{product.name}</h3>
-        <p>{verified ? 'Product category verified from KKGT’s existing public catalogue.' : 'Public product name recovered; technical category requires label confirmation.'}</p>
-        <div className="product-card__status"><ShieldCheck size={15} aria-hidden="true" /> Technical claims shown only when verified</div>
+        <span className="product-card__ingredient">{product.activeIngredient}</span>
+        <p>{product.description}</p>
+        <div className="product-card__status"><ShieldCheck size={15} aria-hidden="true" /> Product image and description verified in the 2026 catalogue</div>
       </div>
     </Link>
   );
