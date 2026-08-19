@@ -30,28 +30,5 @@ export const commodities: Commodity[] = [
   { slug: 'red-kidney-beans', name: 'Red Kidney Beans', family: 'Bean', summary: 'A bean commodity included in KKGT’s public export offering.', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=86' },
 ];
 
-export type ProductCategory = 'Fungicide' | 'Herbicide' | 'Insecticide' | 'To confirm';
-
-export type AgroProduct = {
-  slug: string;
-  name: string;
-  category: ProductCategory;
-  verification: 'category-verified' | 'name-only';
-};
-
-export const agroProducts: AgroProduct[] = [
-  { slug: 'harmony', name: 'HARMONY', category: 'Fungicide', verification: 'category-verified' },
-  { slug: 'horozeb', name: 'Horozeb', category: 'Fungicide', verification: 'category-verified' },
-  { slug: 'metazin', name: 'Metazin', category: 'Fungicide', verification: 'category-verified' },
-  { slug: 'ok-bright', name: 'OK Bright', category: 'Fungicide', verification: 'category-verified' },
-  { slug: 'k-zole', name: 'K-Zole', category: 'Fungicide', verification: 'category-verified' },
-  { slug: 'kk-top', name: 'KK Top', category: 'Fungicide', verification: 'category-verified' },
-  { slug: 'linko-up', name: 'Linko Up', category: 'To confirm', verification: 'name-only' },
-  { slug: 'range', name: 'Range', category: 'To confirm', verification: 'name-only' },
-  { slug: 'agroban', name: 'AGROBAN', category: 'To confirm', verification: 'name-only' },
-  { slug: 'dedu-star', name: 'Dedu Star', category: 'To confirm', verification: 'name-only' },
-  { slug: 'klodin-gold-20-ac', name: 'Klodin Gold 20% AC', category: 'To confirm', verification: 'name-only' },
-  { slug: 'gelyfel-48-ac-al', name: 'Gelyfel 48% AC AL', category: 'To confirm', verification: 'name-only' },
-  { slug: 'zhora-24d-72', name: 'Zhora 2,4D 72%', category: 'To confirm', verification: 'name-only' },
-  { slug: 'fast-10', name: 'Fast 10%', category: 'To confirm', verification: 'name-only' },
-];
+export type { AgroProduct, ProductCategory } from './productCatalog';
+export { agroProducts } from './productCatalog';
