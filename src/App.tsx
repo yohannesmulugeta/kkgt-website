@@ -4,7 +4,7 @@ import { SiteShell } from './components/SiteShell';
 
 const Home = lazy(() => import('./pages/Home').then((module) => ({ default: module.Home })));
 const About = lazy(() => import('./pages/About').then((module) => ({ default: module.About })));
-const Coffee = lazy(() => import('./pages/Coffee').then((module) => ({ default: module.Coffee })));
+const Coffee = lazy(() => import('./pages/CoffeeLanding').then((module) => ({ default: module.CoffeeLanding })));
 const CoffeeOrigin = lazy(() => import('./pages/Coffee').then((module) => ({ default: module.CoffeeOrigin })));
 const Commodities = lazy(() => import('./pages/Commodities').then((module) => ({ default: module.Commodities })));
 const CommodityDetail = lazy(() => import('./pages/Commodities').then((module) => ({ default: module.CommodityDetail })));
