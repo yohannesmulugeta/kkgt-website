@@ -7,6 +7,7 @@ import './overrides.css';
 import './site.css';
 import './journey.css';
 import './coffee-story.css';
+import './coffee-landing.css';
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
