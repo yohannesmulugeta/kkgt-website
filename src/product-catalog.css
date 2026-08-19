@@ -1,0 +1,35 @@
+/* KKGT 2026 agrochemical catalogue — real product imagery + source-backed copy */
+.product-card--catalogue{overflow:hidden}
+.product-card--catalogue .product-card__top{grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.product-card__catalog-number{justify-self:end;font-size:10px;letter-spacing:.12em;font-weight:900;color:var(--muted)}
+.product-card__visual--photo{height:205px;margin:0 20px 20px;border-radius:18px;background-color:#edf4ef;box-shadow:inset 0 0 0 1px rgba(16,32,25,.08);overflow:hidden;transition:transform .35s ease,box-shadow .35s ease}
+.product-card--catalogue:hover .product-card__visual--photo{transform:scale(1.015);box-shadow:0 18px 42px rgba(6,43,27,.12)}
+.product-card__ingredient{display:block;margin:-2px 0 14px;color:var(--green);font-size:11px;font-weight:850;line-height:1.55}
+.product-card--catalogue .product-card__body p{min-height:74px}
+.product-card--catalogue .product-card__status{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+
+.product-hero--catalogue{background:linear-gradient(135deg,#061f16,#0a4b2f);color:#fff}
+.product-hero__visual--catalogue{align-self:center}
+.product-hero__catalog-image{width:100%;aspect-ratio:160/115;border-radius:28px;background-color:#eef4ef;box-shadow:0 28px 80px rgba(0,0,0,.28);overflow:hidden}
+.product-hero__visual--catalogue>span{display:block;margin-top:16px;color:rgba(255,255,255,.55);font-size:9px;font-weight:900;letter-spacing:.16em}
+.product-hero__chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+.product-subcategory{background:rgba(255,255,255,.1)!important;color:#fff!important;border-color:rgba(255,255,255,.22)!important}
+.product-hero__ingredient{margin:28px 0 24px;padding:18px 0;border-top:1px solid rgba(255,255,255,.17);border-bottom:1px solid rgba(255,255,255,.17)}
+.product-hero__ingredient span{display:block;margin-bottom:7px;font-size:9px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.48)}
+.product-hero__ingredient strong{display:block;max-width:680px;font-size:16px;line-height:1.55;color:#fff}
+.product-provisional-note{max-width:680px;margin:-5px 0 24px;padding:13px 16px;border-radius:12px;background:rgba(239,106,36,.14);border:1px solid rgba(239,106,36,.34);color:rgba(255,255,255,.78);font-size:12px;line-height:1.65}
+.product-spec-grid__wide{grid-column:1/-1}
+.product-spec-grid__wide strong{max-width:760px}
+
+@media(max-width:900px){
+  .product-card__visual--photo{height:190px}
+  .product-hero__catalog-image{border-radius:22px}
+}
+
+@media(max-width:640px){
+  .product-card__visual--photo{height:185px;margin-inline:16px}
+  .product-card--catalogue .product-card__body p{min-height:0}
+  .product-card__catalog-number{font-size:9px}
+  .product-hero__catalog-image{border-radius:18px}
+  .product-spec-grid__wide{grid-column:auto}
+}
