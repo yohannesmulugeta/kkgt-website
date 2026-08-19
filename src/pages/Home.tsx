@@ -29,6 +29,7 @@ function CinematicBusinessScroll() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [targetIndex, setTargetIndex] = useState(0);
   const [frameMode, setFrameMode] = useState<FrameMode>('before');
+  const [sceneProgress, setSceneProgress] = useState(0);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -45,15 +46,13 @@ function CinematicBusinessScroll() {
       const travelled = Math.min(Math.max(-rect.top, 0), travel);
       const progress = travelled / travel;
 
-      const nextTarget = progress < 0.19
-        ? 0
-        : progress < 0.46
-          ? 1
-          : progress < 0.73
-            ? 2
-            : 3;
+      // Four equal story windows. The shorter track makes each business feel
+      // like roughly two deliberate scroll movements instead of a long hold.
+      const nextTarget = Math.min(3, Math.floor(Math.min(progress, 0.999999) * 4));
+      const localProgress = Math.min(1, Math.max(0, (progress * 4) - nextTarget));
 
       setTargetIndex((current) => (current === nextTarget ? current : nextTarget));
+      setSceneProgress((current) => Math.abs(current - localProgress) < 0.015 ? current : localProgress);
 
       const nextMode: FrameMode = rect.top > 0
         ? 'before'
@@ -88,7 +87,7 @@ function CinematicBusinessScroll() {
         if (current === targetIndex) return current;
         return current + (targetIndex > current ? 1 : -1);
       });
-    }, 460);
+    }, 260);
 
     return () => window.clearTimeout(timer);
   }, [activeIndex, targetIndex, reduceMotion]);
@@ -114,6 +113,29 @@ function CinematicBusinessScroll() {
     );
   }
 
+  const sceneMotion = [
+    {
+      x: `${-1.8 + sceneProgress * 3.6}%`,
+      y: `${0.4 - sceneProgress * 0.8}%`,
+      scale: 1.075 - sceneProgress * 0.035,
+    },
+    {
+      x: `${1.9 - sceneProgress * 3.8}%`,
+      y: `${-0.5 + sceneProgress * 0.9}%`,
+      scale: 1.055 + sceneProgress * 0.012,
+    },
+    {
+      x: `${-0.7 + sceneProgress * 1.4}%`,
+      y: `${1.8 - sceneProgress * 3.6}%`,
+      scale: 1.08 - sceneProgress * 0.03,
+    },
+    {
+      x: `${-1.5 + sceneProgress * 3}%`,
+      y: `${0.6 - sceneProgress * 0.9}%`,
+      scale: 1.045 + sceneProgress * 0.025,
+    },
+  ];
+
   return (
     <section className="home-scroll" aria-label="Scroll through KKGT business lines">
       <div className="home-scroll__section-intro">
@@ -122,11 +144,11 @@ function CinematicBusinessScroll() {
             <span>ONE CINEMATIC MOMENT</span>
             <strong>Four businesses. One connected view.</strong>
           </div>
-          <p>Scroll through one scene as KKGT moves from coffee to commodities, crop protection and trading.</p>
+          <p>Scroll once to move through the scene. Scroll again to reveal the next KKGT business.</p>
         </div>
       </div>
 
-      <div ref={trackRef} className="home-scroll__track">
+      <div ref={trackRef} className="home-scroll__track" style={{ height: '390vh' }}>
         <div className="home-scroll__fallback" aria-hidden="true">
           {scrollBusinesses.map((area) => (
             <div key={area.to} className="home-scroll__fallback-panel" style={{ backgroundImage: `url(${area.image})` }} />
@@ -142,9 +164,16 @@ function CinematicBusinessScroll() {
                 style={{ backgroundImage: `url(${area.image})` }}
                 animate={{
                   opacity: activeIndex === index ? 1 : 0,
-                  scale: activeIndex === index ? 1.01 : 1.055,
+                  x: activeIndex === index ? sceneMotion[index].x : '0%',
+                  y: activeIndex === index ? sceneMotion[index].y : '0%',
+                  scale: activeIndex === index ? sceneMotion[index].scale : 1.055,
                 }}
-                transition={{ duration: .62, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  opacity: { duration: .56, ease: [0.22, 1, 0.36, 1] },
+                  x: { duration: .16, ease: 'linear' },
+                  y: { duration: .16, ease: 'linear' },
+                  scale: { duration: .16, ease: 'linear' },
+                }}
               />
             ))}
             <div className="home-scroll__veil" />
@@ -161,7 +190,7 @@ function CinematicBusinessScroll() {
                     opacity: activeIndex === index ? 1 : 0,
                     y: activeIndex === index ? 0 : 20,
                   }}
-                  transition={{ duration: .4, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: .36, ease: [0.22, 1, 0.36, 1] }}
                   aria-hidden={activeIndex !== index}
                 >
                   <span className="home-scroll__kicker">KKGT BUSINESS JOURNEY</span>
@@ -190,7 +219,7 @@ function CinematicBusinessScroll() {
           </div>
 
           <div className="home-scroll__hint" aria-hidden="true">
-            <ArrowDownRight size={15} /> Scroll to transform the portfolio
+            <ArrowDownRight size={15} /> Scroll to move the scene · scroll again to change business
           </div>
 
           <div className="home-scroll__progress" aria-hidden="true">
