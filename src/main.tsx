@@ -9,17 +9,25 @@ import './journey.css';
 import './coffee-story.css';
 
 function ScrollManager() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
+      if (hash) {
+        const target = document.getElementById(hash.slice(1));
+        if (target) {
+          target.scrollIntoView({ behavior: 'auto', block: 'start' });
+          return;
+        }
+      }
+
       window.scrollTo({ top: 0, behavior: 'auto' });
       const main = document.getElementById('main-content');
       main?.focus({ preventScroll: true });
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [pathname]);
+  }, [pathname, hash]);
 
   return null;
 }
