@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ImageLinkCard, InquiryBand, Reveal, SectionHeading, Seo } from '../components/UI';
@@ -21,40 +21,77 @@ const scrollBusinesses = businessAreas.map((area, index) => ({
   ][index],
 }));
 
+type FrameMode = 'before' | 'active' | 'after';
+
 function CinematicBusinessScroll() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const lastStageChangeAt = useRef(0);
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ['start start', 'end end'],
-  });
+  const [targetIndex, setTargetIndex] = useState(0);
+  const [frameMode, setFrameMode] = useState<FrameMode>('before');
 
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
+  useEffect(() => {
     if (reduceMotion) return;
 
-    const progress = Math.max(0, Math.min(1, latest));
-    const targetIndex = progress < 0.17
-      ? 0
-      : progress < 0.45
-        ? 1
-        : progress < 0.73
-          ? 2
-          : 3;
-    const now = Date.now();
+    let frame = 0;
 
-    setActiveIndex((current) => {
-      if (current === targetIndex) return current;
+    const update = () => {
+      const track = trackRef.current;
+      if (!track) return;
 
-      // A fast wheel/trackpad gesture may jump across several progress ranges.
-      // Advance only one business at a time and give every scene time to render.
-      if (now - lastStageChangeAt.current < 520) return current;
+      const rect = track.getBoundingClientRect();
+      const viewportHeight = Math.max(window.innerHeight, 1);
+      const travel = Math.max(track.offsetHeight - viewportHeight, 1);
+      const travelled = Math.min(Math.max(-rect.top, 0), travel);
+      const progress = travelled / travel;
 
-      lastStageChangeAt.current = now;
-      return current + (targetIndex > current ? 1 : -1);
-    });
-  });
+      const nextTarget = progress < 0.19
+        ? 0
+        : progress < 0.46
+          ? 1
+          : progress < 0.73
+            ? 2
+            : 3;
+
+      setTargetIndex((current) => (current === nextTarget ? current : nextTarget));
+
+      const nextMode: FrameMode = rect.top > 0
+        ? 'before'
+        : rect.bottom <= viewportHeight
+          ? 'after'
+          : 'active';
+
+      setFrameMode((current) => (current === nextMode ? current : nextMode));
+    };
+
+    const onScroll = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    if (reduceMotion || activeIndex === targetIndex) return;
+
+    const timer = window.setTimeout(() => {
+      setActiveIndex((current) => {
+        if (current === targetIndex) return current;
+        return current + (targetIndex > current ? 1 : -1);
+      });
+    }, 460);
+
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, targetIndex, reduceMotion]);
 
   if (reduceMotion) {
     return (
@@ -90,7 +127,13 @@ function CinematicBusinessScroll() {
       </div>
 
       <div ref={trackRef} className="home-scroll__track">
-        <div className="home-scroll__sticky">
+        <div className="home-scroll__fallback" aria-hidden="true">
+          {scrollBusinesses.map((area) => (
+            <div key={area.to} className="home-scroll__fallback-panel" style={{ backgroundImage: `url(${area.image})` }} />
+          ))}
+        </div>
+
+        <div className={`home-scroll__frame home-scroll__frame--${frameMode}`}>
           <div className="home-scroll__media" aria-hidden="true">
             {scrollBusinesses.map((area, index) => (
               <motion.div
@@ -99,9 +142,9 @@ function CinematicBusinessScroll() {
                 style={{ backgroundImage: `url(${area.image})` }}
                 animate={{
                   opacity: activeIndex === index ? 1 : 0,
-                  scale: activeIndex === index ? 1.01 : 1.06,
+                  scale: activeIndex === index ? 1.01 : 1.055,
                 }}
-                transition={{ duration: .68, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: .62, ease: [0.22, 1, 0.36, 1] }}
               />
             ))}
             <div className="home-scroll__veil" />
@@ -116,9 +159,9 @@ function CinematicBusinessScroll() {
                   className={`home-scroll__copy${activeIndex === index ? ' is-active' : ''}`}
                   animate={{
                     opacity: activeIndex === index ? 1 : 0,
-                    y: activeIndex === index ? 0 : 22,
+                    y: activeIndex === index ? 0 : 20,
                   }}
-                  transition={{ duration: .42, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: .4, ease: [0.22, 1, 0.36, 1] }}
                   aria-hidden={activeIndex !== index}
                 >
                   <span className="home-scroll__kicker">KKGT BUSINESS JOURNEY</span>
