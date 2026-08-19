@@ -1,34 +1,42 @@
 import { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowUpRight, Search, ShieldAlert } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
-import { InquiryBand, PageHero, ProductCard, Reveal, SectionHeading, Seo } from '../components/UI';
-import { agroProducts, type ProductCategory } from '../data/catalog';
+import { getAgroProductImageStyle, InquiryBand, PageHero, ProductCard, Reveal, SectionHeading, Seo } from '../components/UI';
+import { agroProducts, type ProductCategory } from '../data/productCatalog';
 
-const filters: Array<'All' | ProductCategory> = ['All', 'Fungicide', 'Herbicide', 'Insecticide', 'To confirm'];
+const filters: Array<'All' | ProductCategory> = ['All', 'Herbicide', 'Fungicide', 'Insecticide'];
 
 export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: 'All' | ProductCategory }) {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<(typeof filters)[number]>(initialCategory);
 
   const products = useMemo(() => agroProducts.filter((product) => {
-    const matchesText = product.name.toLowerCase().includes(query.toLowerCase());
+    const searchText = `${product.name} ${product.activeIngredient} ${product.description}`.toLowerCase();
+    const matchesText = searchText.includes(query.toLowerCase());
     const matchesCategory = filter === 'All' || product.category === filter;
     return matchesText && matchesCategory;
   }), [query, filter]);
 
   const pageTitle = initialCategory === 'All' ? 'Crop protection' : `${initialCategory}s`;
-  const pageAccent = initialCategory === 'All' ? 'without guesswork.' : 'from KKGT.';
+  const pageAccent = initialCategory === 'All' ? 'from the 2026 catalogue.' : 'with verified catalogue content.';
 
   return (
     <>
-      <Seo title={`${initialCategory === 'All' ? 'Agrochemicals & Crop Protection' : `${initialCategory}s`} | KKGT`} description="Browse KKGT’s crop-protection catalogue with search and category filters. Technical claims are displayed only when verified from current product labels." />
-      <PageHero eyebrow="AGROCHEMICALS" title={pageTitle} accent={pageAccent} copy="A professional catalogue should help customers find products quickly while keeping regulated product claims tied to verified labels and current company records." image="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=2000&q=88" />
+      <Seo title={`${initialCategory === 'All' ? 'Agrochemicals & Crop Protection' : `${initialCategory}s`} | KKGT`} description="Browse KKGT crop-protection products that have both a visible product image and an English product description in the supplied 2026 catalogue." />
+      <PageHero eyebrow="AGROCHEMICALS" title={pageTitle} accent={pageAccent} copy="This catalogue publishes only products supported by both a visible product image and an English description in KKGT’s supplied 2026 Product Catalogue." image="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=2000&q=88" />
 
       <section className="section section--paper">
         <div className="container">
-          <Reveal><SectionHeading eyebrow="PRODUCT DISCOVERY" title="Search the catalogue." accent="Filter by verified category." copy="Names below were recovered from KKGT’s existing public catalogue. Six products were also publicly grouped under fungicides; other categories remain unassigned until labels are confirmed." /></Reveal>
+          <Reveal>
+            <SectionHeading
+              eyebrow="2026 PRODUCT CATALOGUE"
+              title={`${agroProducts.length} products with real catalogue images.`}
+              accent="No image, no listing."
+              copy="Products with a blank image area in the supplied catalogue are intentionally excluded. Search by product name, active ingredient or description."
+            />
+          </Reveal>
           <Reveal className="catalog-tools">
-            <label className="catalog-search"><Search size={18} aria-hidden="true" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search product name" aria-label="Search agrochemical products" /></label>
+            <label className="catalog-search"><Search size={18} aria-hidden="true" /><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search name, active ingredient or use" aria-label="Search agrochemical products" /></label>
             <div className="filter-tabs" role="group" aria-label="Product category filters">
               {filters.map((item) => <button type="button" key={item} aria-pressed={filter === item} className={filter === item ? 'active' : ''} onClick={() => setFilter(item)}>{item}</button>)}
             </div>
@@ -36,13 +44,13 @@ export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: '
           <div className="product-grid">
             {products.map((product, index) => <Reveal key={product.slug} delay={(index % 4) * .03}><ProductCard product={product} /></Reveal>)}
           </div>
-          {products.length === 0 ? <div className="empty-state"><strong>No safely verified products in this category yet.</strong><p>KKGT can assign products here as soon as current labels and category information are confirmed.</p></div> : null}
+          {products.length === 0 ? <div className="empty-state"><strong>No matching catalogue product.</strong><p>Try another product name, active ingredient or category.</p></div> : null}
         </div>
       </section>
 
       <section className="section section--cream">
         <div className="container solution-grid">
-          <Reveal><span className="eyebrow">FIND BY FARMING NEED</span><h2>A catalogue designed around <em>the problem being solved.</em></h2><p>Once label data is confirmed, products can also be filtered by crop, weed, disease, insect, active ingredient and formulation.</p></Reveal>
+          <Reveal><span className="eyebrow">FIND BY FARMING NEED</span><h2>Start with the <em>product category.</em></h2><p>Use the catalogue descriptions as a discovery guide. Application instructions, rates and safety requirements must still be checked against the current approved label.</p></Reveal>
           <Reveal className="solution-list" delay={.08}>
             <Link to="/agrochemicals/herbicides"><span>01</span><strong>Weed control</strong><p>Herbicides</p><ArrowUpRight size={18} aria-hidden="true" /></Link>
             <Link to="/agrochemicals/fungicides"><span>02</span><strong>Disease control</strong><p>Fungicides</p><ArrowUpRight size={18} aria-hidden="true" /></Link>
@@ -51,7 +59,7 @@ export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: '
         </div>
       </section>
 
-      <InquiryBand title="Need help identifying the right KKGT product?" copy="Send the crop, problem and product name if known. Technical recommendations should always be confirmed against the approved label and qualified local guidance." />
+      <InquiryBand title="Need current information about a KKGT product?" copy="Choose a product and send your inquiry. Application rates, registration details and safety instructions should always be confirmed from the current approved label." />
     </>
   );
 }
@@ -61,18 +69,25 @@ export function ProductDetail() {
   const product = agroProducts.find((item) => item.slug === slug);
   if (!product) return <div className="section container"><h1>Product not found.</h1><Link to="/agrochemicals">Back to catalogue</Link></div>;
 
-  const verified = product.verification === 'category-verified';
   return (
     <>
-      <Seo title={`${product.name} | KKGT Agrochemicals`} description={`${product.name} is listed in KKGT’s public agrochemical catalogue. Technical product details are published only after verification from approved labels.`} />
-      <section className="product-hero">
+      <Seo title={`${product.name} | KKGT Agrochemicals`} description={product.description} />
+      <section className="product-hero product-hero--catalogue">
         <div className="container product-hero__grid">
-          <Reveal className="product-hero__visual"><div className="product-monogram">{product.name.slice(0, 2).toUpperCase()}</div><span>KKGT PRODUCT CATALOGUE</span></Reveal>
+          <Reveal className="product-hero__visual product-hero__visual--catalogue">
+            <div className="product-hero__catalog-image" style={getAgroProductImageStyle(product)} role="img" aria-label={`${product.name} product image from KKGT 2026 catalogue`} />
+            <span>KKGT 2026 PRODUCT CATALOGUE · #{String(product.catalogNumber).padStart(2, '0')}</span>
+          </Reveal>
           <Reveal className="product-hero__copy" delay={.08}>
             <Link to="/agrochemicals" className="back-link back-link--light"><ArrowLeft size={16} aria-hidden="true" /> All agrochemicals</Link>
-            <span className={`category-chip ${verified ? 'verified' : 'pending'}`}>{product.category}</span>
+            <div className="product-hero__chips">
+              <span className="category-chip verified">{product.category}</span>
+              {product.subcategory ? <span className="category-chip product-subcategory">{product.subcategory}</span> : null}
+            </div>
             <h1>{product.name}</h1>
-            <p>{verified ? 'The product name and fungicide category are represented on KKGT’s existing public site. Technical details still require current label confirmation.' : 'The product name is represented in KKGT’s existing public catalogue. Category and technical details require current label confirmation.'}</p>
+            <p>{product.description}</p>
+            <div className="product-hero__ingredient"><span>Active ingredient</span><strong>{product.activeIngredient}</strong></div>
+            {product.provisional ? <div className="product-provisional-note">The supplied catalogue marks part of this active-ingredient statement as provisional. Confirm it against the current approved label.</div> : null}
             <Link to={`/contact?interest=agrochemical&product=${encodeURIComponent(product.name)}`} className="button button--orange">Ask about this product <ArrowUpRight size={17} aria-hidden="true" /></Link>
           </Reveal>
         </div>
@@ -80,13 +95,20 @@ export function ProductDetail() {
 
       <section className="section section--paper">
         <div className="container detail-layout">
-          <Reveal className="detail-sidebar"><span className="eyebrow">TECHNICAL INFORMATION</span></Reveal>
+          <Reveal className="detail-sidebar"><span className="eyebrow">CATALOGUE INFORMATION</span></Reveal>
           <Reveal className="detail-copy" delay={.08}>
-            <h2>Technical claims stay hidden until <em>the label is verified.</em></h2>
-            <div className="spec-placeholder-grid">
-              {['Active ingredient', 'Formulation', 'Registered crop', 'Target pest / weed / disease', 'Application rate', 'Registration details', 'PPE / safety', 'PHI / REI'].map((label) => <div key={label}><span>{label}</span><strong>Awaiting approved label</strong></div>)}
+            <h2>Published from the supplied <em>2026 catalogue.</em></h2>
+            <p>The product image, category, active ingredient and English description below are taken from the supplied KKGT catalogue. Information not shown there is not invented.</p>
+            <div className="spec-placeholder-grid product-spec-grid">
+              <div><span>Catalogue number</span><strong>#{String(product.catalogNumber).padStart(2, '0')}</strong></div>
+              <div><span>Category</span><strong>{product.subcategory ?? product.category}</strong></div>
+              <div className="product-spec-grid__wide"><span>Active ingredient</span><strong>{product.activeIngredient}</strong></div>
+              <div><span>Application rate</span><strong>Confirm approved label</strong></div>
+              <div><span>Registration details</span><strong>Confirm approved label</strong></div>
+              <div><span>PPE / safety</span><strong>Confirm approved label</strong></div>
+              <div><span>PHI / REI</span><strong>Confirm approved label</strong></div>
             </div>
-            <div className="safety-note"><ShieldAlert size={22} aria-hidden="true" /><div><strong>Product safety rule</strong><p>Do not use this page as an application instruction. Rates, crops, targets and safety requirements must come from the current approved product label and applicable Ethiopian requirements.</p></div></div>
+            <div className="safety-note"><ShieldAlert size={22} aria-hidden="true" /><div><strong>Product safety rule</strong><p>Do not use this page as a complete application instruction. Rates, crops, targets, PPE, PHI/REI and other safety requirements must be confirmed from the current approved product label and applicable Ethiopian requirements.</p></div></div>
           </Reveal>
         </div>
       </section>
