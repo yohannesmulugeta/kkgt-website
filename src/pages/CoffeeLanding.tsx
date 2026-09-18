@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CoffeeScrollytelling } from '../components/CoffeeScrollytelling';
 import { InquiryBand, Reveal, Seo } from '../components/UI';
 import { coffeeOrigins } from '../data/catalog';
 
@@ -326,19 +327,33 @@ export function CoffeeLanding() {
       <Seo title="Ethiopian Coffee Story & Origins | KKGT" description="Discover Ethiopia’s coffee story and explore Yirgacheffe, Sidama, Limmu, Jimma/Djimmah and Lekempti origins represented by KKGT." />
 
       <section className="coffee2-hero">
-        <div className="coffee2-hero__media" aria-hidden="true"><img src={HERO} alt="" loading="eager" decoding="async" fetchPriority="high" /></div>
+        <div className="coffee2-hero__media" aria-hidden="true">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={HERO}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 48%' }}
+          >
+            <source src={`${import.meta.env.BASE_URL}assets/video/coffee-journey.mp4`} type="video/mp4" />
+            <source src={`${import.meta.env.BASE_URL}assets/video/0919.mp4`} type="video/mp4" />
+            <img src={HERO} alt="" loading="eager" decoding="async" fetchPriority="high" />
+          </video>
+        </div>
         <div className="coffee2-hero__scrim" />
         <div className="container coffee2-hero__content">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .72, ease: [0.22, 1, 0.36, 1] }}>
             <span>ETHIOPIA · THE ORIGIN OF COFFEE</span>
             <h1>Where coffee<br /><em>began.</em></h1>
             <p>Discover coffee through Ethiopia first—its land, culture and journey—then enter the individual origins KKGT presents to buyers.</p>
-            <a href="#coffee-story">Scroll to discover <ArrowDown size={17} aria-hidden="true" /></a>
+            <a href="#coffee-story">Explore the Living Origin <ArrowDown size={17} aria-hidden="true" /></a>
           </motion.div>
         </div>
       </section>
 
-      <HistoryPanels />
+      <CoffeeScrollytelling />
 
       <section className="coffee2-ceremony">
         <div className="coffee2-ceremony__media"><img src={CEREMONY} alt="Traditional Ethiopian coffee ceremony" loading="lazy" decoding="async" /></div>

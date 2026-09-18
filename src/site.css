@@ -4,13 +4,12 @@
    interactive workflow, and final rendering hardening. */
 
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-padding-top: 96px;
 }
 
 body {
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: clip;
 }
 
 #root,
