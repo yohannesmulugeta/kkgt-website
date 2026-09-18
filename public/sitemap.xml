@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Core Company Pages -->
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/about</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/coffee</loc></url>
@@ -11,29 +12,48 @@
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/trading</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/quality</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/contact</loc></url>
+
+  <!-- Coffee Origins -->
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/coffee/yirgacheffe</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/coffee/sidama</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/coffee/limmu</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/coffee/jimma</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/coffee/lekempti</loc></url>
+
+  <!-- Agricultural Commodities -->
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/commodities/sesame</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/commodities/soybeans</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/commodities/mung-beans</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/commodities/chickpeas</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/commodities/white-beans</loc></url>
   <url><loc>https://yohannesmulugeta.github.io/kkgt-website/commodities/red-kidney-beans</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/harmony</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/horozeb</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/metazin</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/ok-bright</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/k-zole</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/kk-top</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/linko-up</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/range</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/agroban</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/dedu-star</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/klodin-gold-20-ac</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/gelyfel-48-ac-al</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/zhora-24d-72</loc></url>
-  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/fast-10</loc></url>
+
+  <!-- Verified 2026 Agrochemical Catalogue Products -->
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/glynan-48-sl</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/zhora-24d-72-sl</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/clodina-gold-20-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/glycan-48-sl</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/glyfull-48-sl</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/linko-up-757-sg</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/ok-bright-24d-72-sl</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/metazin-66-sc</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/harmony-36-wdg</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/k-zole-25-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/copmate-50-wp</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/dimentozeb-69-wp</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/kk-top-40-sc</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/horozeb-80-wp</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/pyrac-extra-45-sc</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/copro-77-wp</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/vital-293-sc</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/sulfvet-80-wdg</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/komazeb-80-wdg</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/agroban-50-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/dedu-star-35-sc</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/drone-40-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/fast-10-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/range-5-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/protex-72-ec</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/fenpron-50-sc</loc></url>
+  <url><loc>https://yohannesmulugeta.github.io/kkgt-website/agrochemicals/product/k-phos-567-tablets</loc></url>
 </urlset>

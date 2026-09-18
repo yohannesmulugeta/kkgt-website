@@ -370,6 +370,112 @@ body {
   justify-self: start;
 }
 
+.inquiry-mode-tabs {
+  display: flex;
+  gap: 8px;
+  background: var(--paper, #f4f2eb);
+  padding: 6px;
+  border-radius: 14px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(16, 32, 25, .08);
+  overflow-x: auto;
+}
+
+.inquiry-mode-btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--motion-fast) ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.inquiry-mode-btn:hover {
+  color: var(--ink);
+}
+
+.inquiry-mode-btn.active {
+  background: #fff;
+  color: var(--green-deep);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+}
+
+.inquiry-actions-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.whatsapp-direct-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: #1b5e20;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 16px;
+  transition: transform var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+}
+
+.whatsapp-direct-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(27, 94, 32, .15);
+  color: #1b5e20;
+}
+
+.floating-whatsapp {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #25d366;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, .35);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+}
+
+.floating-whatsapp:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, .45);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .floating-whatsapp {
+    bottom: 16px;
+    right: 16px;
+    padding: 12px;
+  }
+  .floating-whatsapp__label {
+    display: none;
+  }
+}
+
 .form-status {
   margin-top: 2px;
 }

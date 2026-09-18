@@ -1,6 +1,6 @@
 import { Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
+import { ArrowUpRight, ChevronDown, Menu, MessageSquare, X } from 'lucide-react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { company } from '../data/company';
 
@@ -31,7 +31,12 @@ const mobileLinks = [
 
 function Logo({ inverted = false }: { inverted?: boolean }) {
   const base = import.meta.env.BASE_URL;
-  return <span className={`logo-lockup ${inverted ? 'logo-lockup--inverted' : ''}`}><img src={`${base}assets/kkgt-logo.svg`} alt="KKGT Import Export" width="320" height="108" decoding="async" /></span>;
+  const logoFile = inverted ? 'assets/kkgt-logo-white.svg' : 'assets/kkgt-logo.svg';
+  return (
+    <span className={`logo-lockup ${inverted ? 'logo-lockup--inverted' : ''}`}>
+      <img src={`${base}${logoFile}`} alt="KKGT Import Export" width="416" height="184" decoding="async" />
+    </span>
+  );
 }
 
 function RouteFallback() {
@@ -71,7 +76,7 @@ function Header() {
   return (
     <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${open ? 'is-menu-open' : ''}`}>
       <div className="container nav-bar">
-        <Link to="/" aria-label="KKGT home" className="brand-link"><Logo /></Link>
+        <Link to="/" aria-label="KKGT home" className="brand-link"><Logo inverted={!scrolled && !open} /></Link>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navGroups.map((item) => {
             if ('children' in item) {
@@ -120,6 +125,11 @@ function Header() {
                   <strong>Start an inquiry</strong>
                   <ArrowUpRight size={18} aria-hidden="true" />
                 </Link>
+                <a href="https://wa.me/251991828202" target="_blank" rel="noreferrer" className="mobile-menu__cta" style={{ background: '#e8f5e9', color: '#1b5e20', borderColor: '#c8e6c9', marginTop: '6px' }}>
+                  <span>WA</span>
+                  <strong>WhatsApp Trade Desk</strong>
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                </a>
               </motion.div>
             </nav>
           </motion.div>
@@ -136,7 +146,13 @@ function Footer() {
         <div className="footer-brand"><Logo inverted /><p>{company.tagline}</p></div>
         <div><span className="footer-label">BUSINESSES</span><Link to="/coffee">Coffee Export</Link><Link to="/commodities">Agricultural Commodities</Link><Link to="/agrochemicals">Agrochemicals</Link><Link to="/trading">Import & Trading</Link></div>
         <div><span className="footer-label">COMPANY</span><Link to="/about">About KKGT</Link><Link to="/quality">Quality & Operations</Link><Link to="/contact">Contact</Link></div>
-        <div><span className="footer-label">CONTACT</span><a href={`mailto:${company.email}`}>{company.email}</a><a href="tel:+251991828202">{company.phones[0]}</a><p>{company.address[0]}<br />{company.address[1]}</p></div>
+        <div>
+          <span className="footer-label">CONTACT</span>
+          <a href={`mailto:${company.email}`}>{company.email}</a>
+          <a href="https://wa.me/251991828202" target="_blank" rel="noreferrer">WhatsApp: +251 99 182 8202</a>
+          <a href="tel:+251991828202">{company.phones[0]}</a>
+          <p>{company.address[0]}<br />{company.address[1]}</p>
+        </div>
       </div>
       <div className="container footer-bottom"><span>© {new Date().getFullYear()} KKGT Import Export</span><span>Quality · Integrity · Innovation</span></div>
     </footer>
@@ -144,5 +160,24 @@ function Footer() {
 }
 
 export function SiteShell() {
-  return <><a className="skip-link" href="#main-content">Skip to content</a><Header /><main id="main-content" tabIndex={-1}><Suspense fallback={<RouteFallback />}><Outlet /></Suspense></main><Footer /></>;
+  return (
+    <>
+      <a className="skip-link" href="#main-content">Skip to content</a>
+      <Header />
+      <main id="main-content" tabIndex={-1}>
+        <Suspense fallback={<RouteFallback />}><Outlet /></Suspense>
+      </main>
+      <Footer />
+      <a
+        href="https://wa.me/251991828202?text=Hello%20KKGT,%20I%20have%20an%20export/trade%20inquiry."
+        target="_blank"
+        rel="noreferrer"
+        className="floating-whatsapp"
+        aria-label="Chat with KKGT Export Desk on WhatsApp"
+      >
+        <MessageSquare size={19} aria-hidden="true" />
+        <span className="floating-whatsapp__label">WhatsApp Trade Desk</span>
+      </a>
+    </>
+  );
 }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowUpRight, Search, ShieldAlert } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { getAgroProductImageStyle, InquiryBand, PageHero, ProductCard, Reveal, SectionHeading, Seo } from '../components/UI';
@@ -9,6 +9,10 @@ const filters: Array<'All' | ProductCategory> = ['All', 'Herbicide', 'Fungicide'
 export function Agrochemicals({ initialCategory = 'All' }: { initialCategory?: 'All' | ProductCategory }) {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<(typeof filters)[number]>(initialCategory);
+
+  useEffect(() => {
+    setFilter(initialCategory);
+  }, [initialCategory]);
 
   const products = useMemo(() => agroProducts.filter((product) => {
     const searchText = `${product.name} ${product.activeIngredient} ${product.description}`.toLowerCase();

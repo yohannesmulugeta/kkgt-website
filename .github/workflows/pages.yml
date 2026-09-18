@@ -35,14 +35,6 @@ jobs:
       - name: Build React site
         run: npm run build
 
-      - name: Copy KKGT brand assets
-        run: |
-          mkdir -p dist/assets
-          cp -R assets/. dist/assets/
-
-      - name: Add SPA fallback for direct routes
-        run: cp dist/index.html dist/404.html
-
       - name: Verify production bundle
         run: |
           test -f dist/index.html

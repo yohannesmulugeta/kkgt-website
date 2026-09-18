@@ -80,7 +80,6 @@ body {
 .site-header.is-menu-open .logo-lockup {
   position: relative;
   z-index: 160;
-  box-shadow: 0 16px 42px rgba(0,0,0,.2);
 }
 
 .mobile-menu--premium {

@@ -202,12 +202,118 @@ function OriginCards() {
                     <span>{meta.region}</span>
                     <h3>{origin.name}</h3>
                     <p>{meta.focus}</p>
+
+                    <div className="origin-stat-row">
+                      <div><span>Altitude</span><strong>{origin.altitude}</strong></div>
+                      <div><span>Grades</span><strong>{origin.grades}</strong></div>
+                      <div><span>Process</span><strong>{origin.processing}</strong></div>
+                      <div><span>Harvest</span><strong>{origin.harvestPeriod}</strong></div>
+                    </div>
+
+                    <div className="cup-tags" aria-label="Cup flavor profile notes">
+                      {origin.cupProfile.map((tag) => <span key={tag} className="cup-tag">{tag}</span>)}
+                    </div>
+
                     <div>Discover the story <ArrowUpRight size={18} aria-hidden="true" /></div>
                   </div>
                 </Link>
               </Reveal>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CoffeeExportSpecs() {
+  return (
+    <section className="coffee2-specs-section">
+      <div className="container">
+        <Reveal className="coffee2-specs-intro">
+          <span className="eyebrow">B2B COMMERCIAL EXPORT STANDARDS</span>
+          <h2>Prepared for demanding <em>international roasters & importers.</em></h2>
+          <p>Standardized packaging, container loading, and quality documentation ready for shipments worldwide.</p>
+        </Reveal>
+
+        <div className="coffee2-specs-grid">
+          <Reveal className="coffee2-spec-card">
+            <div className="coffee2-spec-card__icon"><PackageCheck size={22} /></div>
+            <h3>Hermetic Packaging</h3>
+            <p>Export-grade packaging engineered to preserve cup freshness, aroma, and moisture stability across ocean routes.</p>
+            <ul>
+              <li><span>Bag Type</span><span>60kg Natural Jute</span></li>
+              <li><span>Liner</span><span>GrainPro / Ecotact Hermetic</span></li>
+              <li><span>Target Moisture</span><span>10.5% – 11.5%</span></li>
+              <li><span>Water Activity</span><span>&lt; 0.70 a_w</span></li>
+            </ul>
+          </Reveal>
+
+          <Reveal className="coffee2-spec-card" delay={.06}>
+            <div className="coffee2-spec-card__icon"><Ship size={22} /></div>
+            <h3>Container Freight & Logistics</h3>
+            <p>Dry-mill preparation in Addis Ababa with seamless transit to the Port of Djibouti for global sea container transport.</p>
+            <ul>
+              <li><span>Container Size</span><span>1x 20ft FCL</span></li>
+              <li><span>Capacity</span><span>320 Bags (19.2 MT)</span></li>
+              <li><span>Incoterms</span><span>FOB Djibouti / CIF Destination</span></li>
+              <li><span>Port of Loading</span><span>Port of Djibouti (DJJIB)</span></li>
+            </ul>
+          </Reveal>
+
+          <Reveal className="coffee2-spec-card" delay={.12}>
+            <div className="coffee2-spec-card__icon"><CheckCircle2 size={22} /></div>
+            <h3>Export Documentation</h3>
+            <p>Complete regulatory compliance and trade certificates issued for customs clearance in Europe, USA, Asia, and the Middle East.</p>
+            <ul>
+              <li><span>Origin Certificate</span><span>ECTA Authorized</span></li>
+              <li><span>Sanitary</span><span>MoA Phytosanitary</span></li>
+              <li><span>ICO Certificate</span><span>International Coffee Org.</span></li>
+              <li><span>Inspection</span><span>Quality & Weight Certificate</span></li>
+            </ul>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CoffeeQualityAssurance() {
+  return (
+    <section className="section section--cream">
+      <div className="container">
+        <Reveal>
+          <span className="eyebrow">QUALITY ASSURANCE WORKFLOW</span>
+          <h2>From physical grading to <em>pre-shipment approval.</em></h2>
+          <p>Every coffee lot passes through systematic inspection before container stuffing and departure.</p>
+        </Reveal>
+
+        <div className="process-grid" style={{ marginTop: '40px' }}>
+          <Reveal className="process-card">
+            <span>01</span>
+            <strong>Green Grading</strong>
+            <p>Screen sizing (14–18) and primary/secondary defect counts strictly audited against SCAA & ECTA standards.</p>
+          </Reveal>
+          <Reveal className="process-card" delay={.04}>
+            <span>02</span>
+            <strong>Moisture Analysis</strong>
+            <p>Precision moisture meters ensure green coffee sits safely between 10.5% and 11.5% prior to packing.</p>
+          </Reveal>
+          <Reveal className="process-card" delay={.08}>
+            <span>03</span>
+            <strong>SCA Cupping</strong>
+            <p>Standardized sensory evaluation assessing fragrance, aroma, acidity, body, sweetness, and cup clarity.</p>
+          </Reveal>
+          <Reveal className="process-card" delay={.12}>
+            <span>04</span>
+            <strong>PSS Sample Dispatch</strong>
+            <p>Pre-Shipment Samples (PSS) air-couriered via DHL/FedEx for importer sign-off before shipping.</p>
+          </Reveal>
+          <Reveal className="process-card" delay={.16}>
+            <span>05</span>
+            <strong>Container Loading</strong>
+            <p>Kraft paper-lined, desiccant-protected 20ft container stuffing supervised to protect export integrity.</p>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -266,16 +372,21 @@ export function CoffeeLanding() {
 
       <OriginAtlas />
       <OriginCards />
+      <CoffeeExportSpecs />
+      <CoffeeQualityAssurance />
 
       <section className="coffee2-buyer">
         <div className="container coffee2-buyer__layout">
           <Reveal>
-            <span>FOR GREEN COFFEE BUYERS</span>
-            <h2>Origin inspires the story.<br /><em>Current lot data closes the trade.</em></h2>
+            <span>FOR GREEN COFFEE IMPORTERS & ROASTERS</span>
+            <h2>Origin inspires the story.<br /><em>Trade-standard lots close the contract.</em></h2>
           </Reveal>
           <Reveal className="coffee2-buyer__copy" delay={.08}>
-            <p>KKGT does not publish assumed grades, crop years, processing methods, volumes or certifications. Send the origin and commercial requirement you need so the offer can be built around current verified information.</p>
-            <Link to="/contact?interest=coffee" className="button button--orange">Start a coffee inquiry <ArrowUpRight size={17} aria-hidden="true" /></Link>
+            <p>From single-origin specialty microlots (Grade 1 & 2) to commercial container loads (Grade 4 & 5), KKGT provides full traceability, ECTA export documentation, and pre-shipment sample verification.</p>
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+              <Link to="/contact?interest=sample" className="button button--orange">Request Coffee Sample (PSS) <ArrowUpRight size={17} aria-hidden="true" /></Link>
+              <Link to="/contact?interest=coffee" className="button button--outline">Request Commercial Quotation <ArrowUpRight size={17} aria-hidden="true" /></Link>
+            </div>
           </Reveal>
         </div>
       </section>
